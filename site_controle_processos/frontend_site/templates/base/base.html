@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Página Base{% endblock %}</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/global.css' %}">
+    <!-- Bloco para incluir CSS específico de cada página -->
+    {% block css %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+        <!-- Cabeçalho -->
+        <header class="header" id="header_geral">
+            <h1 class="titulo" id="titulo_header">{% block header_title %}Titulo da Página{% endblock %}</h1>
+            <nav>
+                <ul id="menu_opcoes_logado">
+                    <li><a href="{% url 'home' %}">Início</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Cadastro</a></li>
+                </ul>
+            </nav>
+        </header>
+    {% endblock %}
+
+    {% block lateral_bar %}
+        <div id="barra_lateral">
+            <nav>
+                <ul>
+                    <li><a href="">Lançamento de Lentes</a></li>
+                    <li><a href="">Serviços</a></li>
+                </ul>
+            </nav>
+        </div>
+    {% endblock %}
+
+    <!-- Bloco para conteúdo específico de cada página -->
+    <main class="main" id="main_geral">
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+        <!-- Rodapé -->
+        <footer class="footer" id="footer_geral">
+            Controle de Processos Casa dos Relojoeiros / Ápice Serviços
+            <img id="logo_apice" src="https://d36urhup7zbd7q.cloudfront.net/ff008fa2-82fd-4d7f-a273-6e159a6949e0/apicesclogotipo.format_png.resize_200x.png#logo">
+        </footer>
+    
+    {% endblock %}
+
+</body>
+</html>

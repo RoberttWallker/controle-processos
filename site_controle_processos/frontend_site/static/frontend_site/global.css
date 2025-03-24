@@ -1,75 +1,129 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    margin: 50;
-    padding: 100px;
+    flex-direction: column;
+    height: 100vh;  /* Garante que a altura mínima ocupe toda a tela */
 }
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px 10px 20px;
+    background-color: rgb(119, 167, 255);
 }
-h2 {
+
+#titulo_header {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+
+#menu_opcoes_logado {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;            /* Alinha os itens no centro verticalmente */
+}
+
+#menu_opcoes_logado li {
+    list-style: none;               /* Remove a marcação de lista */
+}
+
+#menu_opcoes_logado a {
+    color: rgb(255, 255, 255);     /* Cor do texto dos links */
+    text-decoration: none;           /* Remove o sublinhado */
+    padding: 10px 20px;              /* Espaçamento dentro dos links */
+}
+
+.footer {
+    font-size: 10px;
+    align-items: center;
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: #ececec;
     text-align: center;
-    margin-bottom: 20px;
 }
-label {
+
+#logo_apice {
+    width: 40px;
+    height: auto;
+    padding: 0px 10px 0px 10px;
+}
+
+#barra_lateral {
+    width: 175px;              /* Largura da barra lateral */
+    position: fixed;
+    left: 0;
+    top: 43px;
+    bottom: 40px;                /* Afastar a barra lateral abaixo do cabeçalho */
+    background-color: #333;    /* Cor de fundo */
+    color: white;
+    padding-top: 20px;         /* Ajuste para não colar no topo */
+}
+
+#barra_lateral nav {
+    color: white;
+    padding: 10px;
+}
+
+#barra_lateral li {
+    list-style: none;    
+}
+
+#barra_lateral a {
+    text-decoration: none;
+    color: white;
+    display: block; /* Faz com que o link ocupe toda a largura */
+    padding: 10px;  /* Adiciona espaço interno */
+}
+
+#barra_lateral a:hover {
+    text-decoration: underline; /* Adiciona o sublinhado ao passar o mouse */
+    background-color: rgba(255, 255, 255, 0.2); /* Efeito de fundo opcional */
+}
+
+.main {
+    margin-left: 175px; /* Deixa espaço para a barra lateral */
+    margin-top: 43px;   /* Evita sobreposição com o cabeçalho */
+    margin-bottom: 40px; /* Evita sobreposição com o rodapé */
+    padding: 15px;
+    background-color: white;
+    height: 100vh;
+}
+
+.formulario {
+    padding: 10px;
+}
+
+.formulario label {
     display: block;
     margin: 10px 0 5px;
 }
-input[type="text"], input[type="email"], input[type="password"] {
+
+.formulario input[type='text'] {
     width: 95%;
-    padding: 10px;
-    margin: 5px 0 15px;
+    padding: 5px;
+    margin: 5px 0 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+
+.formulario input[type='number'] {
+    width: 95%;
+    padding: 5px;
+    margin: 5px 0 5px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #45a049;
-}
-
-.lista_mensagens {
-    position: fixed;
-    padding: 10px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.message {
-    left: 0;
-    right: 0;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-}
-
-/* Estilo para mensagens de sucesso */
-.message.success {
-    background-color: #4CAF50; /* Verde */
-    color: white;
-    border: 1px solid #388E3C; /* Cor verde mais escura */
-}
-
-.message.error {
-    background-color: #e96f6f; /* Verde */
-    color: white;
-    border: 1px solid #d85252; /* Cor verde mais escura */
 }

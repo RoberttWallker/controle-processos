@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+<!-- login.html -->
+{% extends "base/base.html" %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/global.css' %}">
-    <style>
-        .footer {
-            position:fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            background-color: #f1f1f1;
-            text-align: center;
-            padding: 10px 0;
-        }
+{% load static %}
 
-        #logo_apice {
-            width: 30px;
-            height: auto;
-            padding-left: 10px;
-        }
-    </style>
-</head>
-<body>
+{% block title %}Login{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/login_register.css' %}">
+{% endblock %}
+
+{% block header %}
+    <!-- Cabeçalho omitido para login -->
+{% endblock %}
+
+{% block lateral_bar %}
+
+{% endblock %}
+
+{% block content %}
+
     <div class="container">
         <h2>Login</h2>
         <form action="{% url 'login' %}" method="POST">
@@ -37,8 +29,9 @@
             <input type="password" id="password" name="password" required>
             <button type="submit">Entrar</button>
         </form>
-        <p>Não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
+        <p id="txt_cadastro">Não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
     </div>
+
     {% if messages %}
         <ul class="lista_mensagens">
             {% for message in messages %}
@@ -55,10 +48,8 @@
             {% endfor %}
         </ul>
     {% endif %}
-</body>
-<footer class='footer'>
-    <p>Controle de Processos Casa dos Relojoeiros</p>
-    Ápice Serviços
-    <img id="logo_apice" src="https://d36urhup7zbd7q.cloudfront.net/ff008fa2-82fd-4d7f-a273-6e159a6949e0/apicesclogotipo.format_png.resize_200x.png#logo">
-</footer>
-</html>
+    
+{% endblock %}
+
+
+

@@ -1,0 +1,44 @@
+<!-- login.html -->
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block title %}Lançamento de Lentes{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/lancamento_lentes.css' %}">
+{% endblock %}
+
+{% block header_title %}
+    Lançamento de Lentes
+{% endblock %}
+
+{% block content %}
+    <div class="formulario" id="formulario_entrada">
+        <form action="entrada_de_nota">
+            {% csrf_token %}
+            <label for="descricao">Descrição </label>
+            <input type="text" id="descricao" name="descricao" required>
+
+            <div class="linha_campos">
+                <div class="campo">
+                    <label for="nota_fiscal">Nota Fiscal </label>
+                    <input type="number" id="nota_fiscal" name="nota_fiscal" required>
+                </div>
+                <div class="campo">
+                    <label for="sequencial_prod">Sequencial (SavWin) </label>
+                    <input type="number" id="sequencial_prod" name="sequencial_prod" required>
+                </div>
+            </div>
+            
+            <label for="codigo_fabricante">Referência Fabricante </label>
+            <input type="text" id="ref_fabricante" name="ref_fabricante" required>
+
+            <label for="valor_custo">Valor de Custo </label>
+            <input type="number" id="valor_custo" name="valor_custo" required>
+
+            <label for="data_compra">Data da Compra </label>
+            <input type="date" id="data_compra" name="data_compra" required>
+        </form>
+    </div>
+{% endblock %}

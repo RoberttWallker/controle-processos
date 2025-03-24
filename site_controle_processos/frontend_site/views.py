@@ -41,13 +41,26 @@ def register_view(request):
             messages.error(request, "Senhas não conferem, tente novamente!")
             return render(request, 'frontend_site/register.html', {'nome': nome, 'email': email})
         
-        User.objects.create_user(
+        if User.objects.filter(username=email).exists():
+            messages.error(request, "Este e-mail já está cadastrado!")
+            return redirect("register")
+        
+        user = User.objects.create_user(
             username=nome,
             email=email,
             password=senha
         )
 
+        user.save()
+
         messages.success(request, "Usuário registrado com sucesso!")
-        return render(request, 'frontend_site/login.html', {'delay_redirect': True})
+        return render(request, 'frontend_site/register.html')
 
     return render(request, 'frontend_site/register.html')
+
+def admin_panel_view(request):
+    return render(request, 'frontend_site/admin_panel.html')
+
+def lanc_lentes_view(request):
+    return render(request, 'frontend_site/lancamento_lentes.html')
+    

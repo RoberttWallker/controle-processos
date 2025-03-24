@@ -1,16 +1,25 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Cadastro</title>
-    
-    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/global.css' %}">
+<!-- register.html -->
+{% extends "base/base.html" %}
 
-</head>
-<body>
-    <div class="container">
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/login_register.css' %}">
+{% endblock %}
+
+{% block header %}
+    <!-- Cabeçalho omitido para registro -->
+{% endblock %}
+
+{% block lateral_bar %}
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container" id="container_register">
         <h2>Cadastre-se</h2>
         <form action="{% url 'register' %}" method="POST">
             
@@ -29,14 +38,22 @@
 
             <button type="submit">Cadastrar</button>
         </form>
-        {% if messages %}
-        <!-- Bloco de mensagens -->
-        <ul>
+    </div>
+
+    {% if messages %}
+        <ul class="lista_mensagens">
             {% for message in messages %}
                 <li class="message {{ message.tags }}">{{ message }}</li>
+                {% if 'success' in message.tags %}
+                    <!-- Script para redirecionar após um pequeno atraso -->
+                    <script type="text/javascript">
+                        setTimeout(function() {
+                            window.location.href = "{% url 'login' %}";  // Redireciona para a página 'home' após o atraso
+                        }, 2000);  // 2 segundos de espera
+                    </script>
+                {% endif %}
             {% endfor %}
         </ul>
-        {% endif %}
-    </div>
-</body>
-</html>
+    {% endif %}
+
+{% endblock %}
