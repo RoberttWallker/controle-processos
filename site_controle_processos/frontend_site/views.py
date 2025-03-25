@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from .models import ComprasLentes
 import time
 
 # Create your views here.
@@ -62,5 +63,29 @@ def admin_panel_view(request):
     return render(request, 'frontend_site/admin_panel.html')
 
 def lanc_lentes_view(request):
+    if request.method == 'POST':
+        descricao = request.POST['descricao']
+        nota_fiscal = request.POST['nota_fiscal']
+        valor_custo = request.POST['valor_custo']
+        data_compra = request.POST['data_compra']
+        sequencial_prod = request.POST['sequencial_prod']
+        ref_fabricante = request.POST['ref_fabricante']
+        observacao = request.POST['observacao']
+
+        # Criar objeto e salvar no banco
+        compra = ComprasLentes.objects.create(
+            descricao=descricao,
+            nota_fiscal=nota_fiscal,
+            valor_custo=valor_custo,
+            data_compra=data_compra,
+            sequencial=sequencial_prod,
+            referencia_fabricante=ref_fabricante,
+            observacao=observacao
+        )
+
+        if compra:
+            messages.success(request, "Entrada efetuada com sucesso.")
+            return redirect('entrada_de_compras')
+
     return render(request, 'frontend_site/lancamento_lentes.html')
     

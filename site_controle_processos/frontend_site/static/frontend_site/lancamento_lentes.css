@@ -3,6 +3,7 @@
     align-content: center;
     width: 100%;
     padding: 10px;
+    padding-bottom: 50px;
 }
 
 .formulario input[type='text'],
@@ -24,4 +25,24 @@
 .linha_campos .campo {
     flex-direction: column;
     flex: 1;
+}
+
+.botao-container {
+    display: flex;
+    justify-content: center; /* Centraliza o botão */
+    margin-top: 20px; /* Espaço acima do botão */
+}
+
+button[type='submit'] {
+    width: 20%;
+    margin-top: 25px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
 }
