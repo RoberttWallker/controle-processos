@@ -1,13 +1,37 @@
-
+/* login_register.css */
 body {
     font-size: 12px;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    padding: 20px;
 }
+
+.main #maing_geral {
+    margin: 20px;
+}
+.sem-layout #header_geral,
+.sem-layout #barra_lateral {
+    display: none; /* Remove o cabeçalho */
+    padding: 0 !important; /* Remove qualquer padding */
+    margin: 0 !important;  /* Remove qualquer margem */
+}
+
+.sem-layout {
+    margin-left: 0 !important; /* Remove o espaço da barra lateral */
+    margin-top: 0 !important; /* Remove o espaço do cabeçalho */
+    padding: 0 !important;
+    
+}
+
+.caixa {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    min-height: 100vh;       /* Garante que a caixa ocupe a altura total da tela */
+    padding: 50px;           /* Padding externo */
+}
+
 .container {
     max-width: 300px;
-    margin: 0 auto;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -28,7 +52,7 @@ label {
     margin: 10px 0 5px;
 }
 input[type="text"], input[type="email"], input[type="password"] {
-    width: 95%;
+    width: 100%;
     padding: 5px;
     margin: 5px 0 5px;
     border: 1px solid #ccc;

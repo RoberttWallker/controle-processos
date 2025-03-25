@@ -1,20 +1,27 @@
+.formulario {
+    display:grid;
+    align-content: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.formulario input[type='text'],
+.formulario input[type='number'],
+.formulario input[type='date'] {
+    width: 100%;
+}
+
+.formulario textarea[id='observacao'] {
+    height: 100px;
+    width: 100%;
+}
+
 .linha_campos {
     display: flex;
-    gap: 20px; /* Espaçamento entre os campos */
+    gap: 20px;
 }
 
 .linha_campos .campo {
-    flex: 1; /* Divide o espaço igualmente */
-}
-
-.linha_campos input {
-    width: 95%; /* Garante que os inputs ocupem o espaço disponível */
-}
-
-.formulario input[name='descricao'] {
-    width: 95%;
-    padding: 5px;
-    margin: 5px 0 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    flex-direction: column;
+    flex: 1;
 }

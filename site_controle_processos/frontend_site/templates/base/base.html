@@ -37,7 +37,7 @@
     {% endblock %}
 
     <!-- Bloco para conteúdo específico de cada página -->
-    <main class="main" id="main_geral">
+    <main class="main {% block main_class %}{% endblock %}" id="main_geral">
         {% block content %}
         
         {% endblock %}
