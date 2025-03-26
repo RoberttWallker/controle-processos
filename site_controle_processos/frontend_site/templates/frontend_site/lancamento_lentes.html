@@ -6,7 +6,7 @@
 {% block title %}Lançamento de Lentes{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/lancamento_lentes.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lancamento_lentes.css' %}">
 {% endblock %}
 
 {% block header_title %}
@@ -18,10 +18,14 @@
         <form action="{% url 'entrada_de_compras' %}" method="post">
             {% csrf_token %}
 
-            <label for="descricao">Descrição </label>
-            <input type="text" id="descricao" name="descricao" required>
-
             <div class="linha_campos" id="linha_campos_1">
+                <div class="campo">
+                    <label for="descricao">Descrição </label>
+                    <input type="text" id="descricao" name="descricao" required>                    
+                </div>
+            </div>
+
+            <div class="linha_campos" id="linha_campos_2">
                 <div class="campo">
                     <label for="nota_fiscal">Nota Fiscal </label>
                     <input type="number" id="nota_fiscal" name="nota_fiscal" required>
@@ -36,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="linha_campos" id="linha_campos_2">
+            <div class="linha_campos" id="linha_campos_3">
                 <div class="campo">
                     <label for="sequencial_prod">Sequencial (SavWin) </label>
                     <input type="number" id="sequencial_prod" name="sequencial_prod" required>

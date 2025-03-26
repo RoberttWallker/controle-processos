@@ -27,6 +27,10 @@
     flex: 1;
 }
 
+#descricao {
+    max-width: 804px !important;
+}
+
 .botao-container {
     display: flex;
     justify-content: center; /* Centraliza o botão */
