@@ -17,9 +17,7 @@
             <h1 class="titulo" id="titulo_header">{% block header_title %}Titulo da Página{% endblock %}</h1>
             <nav>
                 <ul id="menu_opcoes_logado">
-                    <li><a href="{% url 'home' %}">Início</a></li>
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Cadastro</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             </nav>
         </header>
@@ -29,7 +27,7 @@
         <div id="barra_lateral">
             <nav>
                 <ul>
-                    <li><a href="{% url 'entrada_de_compras' %}">Lançamento de Lentes</a></li>
+                    <li><a href="{% url 'lancamento_de_lentes' %}">Lançamento de Lentes</a></li>
                     <li><a href="">Serviços</a></li>
                 </ul>
             </nav>

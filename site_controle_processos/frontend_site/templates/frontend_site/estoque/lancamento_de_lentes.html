@@ -1,12 +1,12 @@
 <!-- login.html -->
-{% extends "base/base.html" %}
+{% extends "frontend_site/base/base.html" %}
 
 {% load static %}
 
 {% block title %}Lançamento de Lentes{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/lancamento_lentes.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estoque/lancamento_de_lentes.css' %}">
 {% endblock %}
 
 {% block header_title %}
@@ -15,7 +15,7 @@
 
 {% block content %}
     <div class="formulario" id="formulario_entrada">
-        <form action="{% url 'entrada_de_compras' %}" method="post">
+        <form action="{% url 'lancamento_de_lentes' %}" method="post">
             {% csrf_token %}
 
             <div class="linha_campos" id="linha_campos_1">

@@ -1,0 +1,70 @@
+{% extends 'frontend_site/base/base.html' %}
+
+{% block main_class %}sem-layout{% endblock %}
+
+{% load static %}
+
+{% block title %}Gerador de Senha{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_temp_key/admin_temp_key.css' %}">
+{% endblock %}
+
+{% block header %}
+    <!-- Cabeçalho omitido para login -->
+{% endblock %}
+
+{% block lateral_bar %}
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="caixa" id="caixa_gerar_senha">
+        <div class="container">
+            <div id="title_gerador_senhas">
+                Gerador de Senha
+            </div>
+            <form id="form_gerar_senha" action="{% url 'gerar_senha' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="palavra_secreta" name="palavra_secreta" placeholder="Palavra Secreta" required>
+                <button type="submit">Gerar Senha</button>
+            </form>
+            <!-- Campo para exibir a senha -->
+            <label for="campo_senha" id="label_senha" style="display:none;">Senha Gerada: </label>
+            <input type="text" id="campo_senha" readonly style="display:none; margin-top:10px;">
+            <!-- Mensagem de erro/sucesso -->
+            <div id="mensagem">
+                {% if senha_gerada %}
+                    <span id="senha_gerada" style="display:none;">{{ senha_gerada }}</span>
+                {% endif %}
+            </div>
+
+            {% if messages %}
+                <div class="caixa_mensagens">
+                    <ul class="lista_mensagens">
+                        {% for message in messages %}
+                            <li class="message {{message.tags}}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        // Função para exibir a senha gerada no campo de input
+        window.onload = function () {
+            var senhaGerada = document.getElementById("senha_gerada");
+            var labelSenha = document.querySelector("label[for='campo_senha']");
+            if (senhaGerada) {
+                var campoSenha = document.getElementById("campo_senha");
+                campoSenha.value = senhaGerada.innerText;  // Exibe a senha gerada
+                campoSenha.style.display = "block"; // Torna visível
+                if (labelSenha) {
+                    labelSenha.style.display = "block"
+                }
+            }
+        };
+    </script>
+
+{% endblock %}

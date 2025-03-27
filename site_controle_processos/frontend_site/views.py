@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .models import ComprasLentes
-import time
 
 # Create your views here.
-def home(request):
-    return render(request, 'frontend_site/home.html')
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 def login_view(request):
     if request.method == 'POST':
@@ -24,14 +25,20 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Login realizado com sucesso!")
-            return render(request, 'frontend_site/login.html')
+            return render(request, 'frontend_site/auth/login.html')
         else:
             messages.error(request, "E-mail ou senha inválidos.")
-            return render(request, 'frontend_site/login.html')
+            return render(request, 'frontend_site/auth/login.html')
 
-    return render(request, 'frontend_site/login.html')
+    return render(request, 'frontend_site/auth/login.html')
 
 def register_view(request):
+    # Verifica se a senha foi validada na sessão
+    if not request.session.get('senha_validada'):
+        # Se a senha não foi validada, redireciona para a página de validação
+        messages.error(request, "Você precisa validar a senha primeiro.")
+        return redirect('validar_senha')
+    
     if request.method == 'POST':
         nome = request.POST['nome']
         email = request.POST['email']
@@ -40,7 +47,7 @@ def register_view(request):
 
         if senha != confirm_senha:
             messages.error(request, "Senhas não conferem, tente novamente!")
-            return render(request, 'frontend_site/register.html', {'nome': nome, 'email': email})
+            return render(request, 'frontend_site/auth/register.html', {'nome': nome, 'email': email})
         
         if User.objects.filter(username=email).exists():
             messages.error(request, "Este e-mail já está cadastrado!")
@@ -54,14 +61,19 @@ def register_view(request):
 
         user.save()
 
+        # Remove a variável de sessão após o registro
+        del request.session['senha_validada']
+
         messages.success(request, "Usuário registrado com sucesso!")
-        return render(request, 'frontend_site/register.html')
+        return render(request, 'frontend_site/auth/register.html')
 
-    return render(request, 'frontend_site/register.html')
+    return render(request, 'frontend_site/auth/register.html')
 
+@login_required
 def admin_panel_view(request):
-    return render(request, 'frontend_site/admin_panel.html')
+    return render(request, 'frontend_site/admin_panel/admin_panel.html')
 
+@login_required
 def lanc_lentes_view(request):
     if request.method == 'POST':
         descricao = request.POST['descricao']
@@ -85,7 +97,7 @@ def lanc_lentes_view(request):
 
         if compra:
             messages.success(request, "Entrada efetuada com sucesso.")
-            return redirect('entrada_de_compras')
+            return redirect('compras_de_lentes')
 
-    return render(request, 'frontend_site/lancamento_lentes.html')
+    return render(request, 'frontend_site/estoque/lancamento_de_lentes.html')
     

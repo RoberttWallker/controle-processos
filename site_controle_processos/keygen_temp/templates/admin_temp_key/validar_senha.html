@@ -1,0 +1,45 @@
+{% extends 'frontend_site/base/base.html' %}
+
+{% block main_class %}sem-layout{% endblock %}
+
+{% load static %}
+
+{% block title %}Validar Senha{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_temp_key/admin_temp_key.css' %}">
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block lateral_bar %}
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="caixa" id="caixa_gerar_senha">
+        <div class="container">
+            <div id="title_gerador_senhas">
+                Validar Senha
+            </div>
+            <form id="form_validar_senha" action="{% url 'validar_senha' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="senha_inserida" name="senha_inserida" placeholder="Insira a senha aqui!" required>
+                <button type="submit">Enviar</button>
+            </form>
+
+            {% if messages %}
+                <div class="caixa_mensagens">
+                    <ul class="lista_mensagens">
+                        {% for message in messages %}
+                            <li class="message {{message.tags}}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

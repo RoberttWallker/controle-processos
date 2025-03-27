@@ -8,18 +8,18 @@ body {
 .main #maing_geral {
     margin: 20px;
 }
-.sem-layout #header_geral,
-.sem-layout #barra_lateral {
-    display: none; /* Remove o cabeçalho */
-    padding: 0 !important; /* Remove qualquer padding */
-    margin: 0 !important;  /* Remove qualquer margem */
-}
 
 .sem-layout {
     margin-left: 0 !important; /* Remove o espaço da barra lateral */
     margin-top: 0 !important; /* Remove o espaço do cabeçalho */
     padding: 0 !important;
     
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Para centralizar verticalmente, se necessário */
 }
 
 .caixa {
@@ -74,7 +74,9 @@ button:hover {
 
 .lista_mensagens {
     position: fixed;
+    bottom: 0;
     padding: 10px;
+    margin-bottom: 100px;
     left: 0;
     right: 0;
     text-align: center;
