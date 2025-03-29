@@ -97,7 +97,7 @@ def lanc_lentes_view(request):
 
         if compra:
             messages.success(request, "Entrada efetuada com sucesso.")
-            return redirect('compras_de_lentes')
+            return redirect('lancamento_de_lentes')
 
     return render(request, 'frontend_site/estoque/lancamento_de_lentes.html')
     
