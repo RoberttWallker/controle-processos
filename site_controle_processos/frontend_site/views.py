@@ -36,7 +36,7 @@ def register_view(request):
     # Verifica se a senha foi validada na sessão
     if not request.session.get('senha_validada'):
         # Se a senha não foi validada, redireciona para a página de validação
-        messages.error(request, "Você precisa validar a senha primeiro.")
+        messages.error(request, "Para se registar, você precisa primeiro solicitar a senha temporária ao administrador e validá-la.")
         return redirect('validar_senha')
     
     if request.method == 'POST':

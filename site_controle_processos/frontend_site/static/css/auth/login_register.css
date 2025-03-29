@@ -24,7 +24,9 @@ body {
 
 .caixa {
     display: flex;
+    flex-direction: column;
     justify-content: center; /* Centraliza horizontalmente */
+    align-content: center;
     align-items: center;     /* Centraliza verticalmente */
     min-height: 100vh;       /* Garante que a caixa ocupe a altura total da tela */
     padding: 50px;           /* Padding externo */
@@ -73,25 +75,17 @@ button:hover {
 }
 
 .lista_mensagens {
-    position: fixed;
-    bottom: 0;
-    padding: 10px;
-    margin-bottom: 100px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-top: 15px; /* Adiciona um espaço entre o form e as mensagens */
+    padding: 0;
+    text-align: center; /* Centraliza o texto */
 }
 
 .message {
-    left: 0;
-    right: 0;
     padding: 10px;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
+    margin: 5px auto; /* Centraliza a mensagem */
 }
 
 /* Estilo para mensagens de sucesso */
