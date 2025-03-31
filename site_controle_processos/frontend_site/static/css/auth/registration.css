@@ -13,7 +13,6 @@ body {
     margin-left: 0 !important; /* Remove o espaço da barra lateral */
     margin-top: 0 !important; /* Remove o espaço do cabeçalho */
     padding: 0 !important;
-    
 }
 
 .header {
@@ -28,7 +27,7 @@ body {
     justify-content: center; /* Centraliza horizontalmente */
     align-content: center;
     align-items: center;     /* Centraliza verticalmente */
-    min-height: 100vh;       /* Garante que a caixa ocupe a altura total da tela */
+    height: 100vh;
     padding: 50px;           /* Padding externo */
 }
 
@@ -49,10 +48,16 @@ h2 {
     margin-bottom: 20px;
 }
 
+#titulo_reset {
+    text-align: center;
+    margin: 0px;
+}
+
 label {
     display: block;
     margin: 10px 0 5px;
 }
+
 input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 5px;
@@ -60,6 +65,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
 button {
     width: 100%;
     margin-top: 25px;
@@ -70,6 +76,7 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
+
 button:hover {
     background-color: #45a049;
 }
