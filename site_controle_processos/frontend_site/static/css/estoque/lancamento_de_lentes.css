@@ -1,3 +1,5 @@
+/* LAYOUT GERAL */
+/* (.CLASSES) */
 .formulario {
     display:grid;
     align-content: center;
@@ -6,29 +8,10 @@
     padding-bottom: 50px;
 }
 
-.formulario input[type='text'],
-.formulario input[type='number'],
-.formulario input[type='date'] {
-    width: 100%;
-}
-
-.formulario textarea[id='observacao'] {
-    height: 100px;
-    width: 100%;
-}
-
 .linha_campos {
     display: flex;
     gap: 20px;
-}
-
-.linha_campos .campo {
-    flex-direction: column;
-    flex: 1;
-}
-
-#descricao {
-    max-width: 804px !important;
+    align-items: center;
 }
 
 .botao-container {
@@ -37,6 +20,45 @@
     margin-top: 20px; /* Espaço acima do botão */
 }
 
+/* (.SUB-CLASSES) */
+.linha_campos .campo {
+    flex-direction: column;
+    flex: 1;
+}
+
+/* ESTILOS ESPECÍFICOS */
+/* (#ID) */
+#campo_maior_1 {
+    flex: 3.12; /* Ocupa 2/3 do espaço */
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#descricao {
+    max-width: 745px !important;
+}
+
+/* ESTILOS DE CAMPOS */
+/* (LABELS) */
+
+/* (INPUTS) */
+.formulario input[type='text'],
+.formulario input[type='number'] {
+    width: 100%;
+}
+
+.formulario input[type='date'] {
+    width: 150px; /* Define um tamanho menor */    
+}
+
+/* (TEXT-AREA) */
+.formulario textarea[id='observacao'] {
+    height: 100px;
+    width: 100%;
+}
+
+/* (ESILOS DE BOTÕES) */
 button[type='submit'] {
     width: 20%;
     margin-top: 25px;
@@ -47,6 +69,7 @@ button[type='submit'] {
     border-radius: 4px;
     cursor: pointer;
 }
+
 button:hover {
     background-color: #45a049;
 }

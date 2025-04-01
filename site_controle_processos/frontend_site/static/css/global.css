@@ -1,4 +1,6 @@
 /* global.css */
+
+/* LAYOUT GERAL */
 * {
     margin:0;
     padding:0;
@@ -12,6 +14,7 @@ body {
     height: 100vh;  /* Garante que a altura mínima ocupe toda a tela */
 }
 
+/* (.CLASSES) */
 .header {
     display: flex;
     justify-content: space-between;
@@ -24,6 +27,32 @@ body {
     background-color: rgb(119, 167, 255);
 }
 
+.footer {
+    font-size: 10px;
+    align-items: center;
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: #ececec;
+    text-align: center;
+}
+
+.formulario {
+    padding: 10px;
+}
+
+.main {
+    margin-left: 175px; /* Deixa espaço para a barra lateral */
+    margin-top: 43px;   /* Evita sobreposição com o cabeçalho */
+    margin-bottom: 40px; /* Evita sobreposição com o rodapé */
+    padding: 15px;
+    background-color: white;
+    height: 100vh;
+}
+
+/* (#IDs) */
 #titulo_header {
     font-size: 20px;
     color: rgb(255, 255, 255);
@@ -43,18 +72,6 @@ body {
     color: rgb(255, 255, 255);     /* Cor do texto dos links */
     text-decoration: none;           /* Remove o sublinhado */
     padding: 10px 20px;              /* Espaçamento dentro dos links */
-}
-
-.footer {
-    font-size: 10px;
-    align-items: center;
-    position:fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background-color: #ececec;
-    text-align: center;
 }
 
 #logo_apice {
@@ -95,19 +112,8 @@ body {
     background-color: rgba(255, 255, 255, 0.2); /* Efeito de fundo opcional */
 }
 
-.main {
-    margin-left: 175px; /* Deixa espaço para a barra lateral */
-    margin-top: 43px;   /* Evita sobreposição com o cabeçalho */
-    margin-bottom: 40px; /* Evita sobreposição com o rodapé */
-    padding: 15px;
-    background-color: white;
-    height: 100vh;
-}
-
-.formulario {
-    padding: 10px;
-}
-
+/* ESTILO ESPECÍFICOS */
+/* (LABELS/INPUTS/TEXT-AREA) */
 .formulario label {
     display: block;
     margin: 10px 0 5px;
@@ -115,8 +121,7 @@ body {
 
 .formulario input[type='text'],
 .formulario input[type='number'],
-.formulario input[type='date']
- {
+.formulario input[type='date'] {
     width: 95%;
     padding: 5px;
     margin: 5px 0 5px;

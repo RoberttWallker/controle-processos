@@ -19,20 +19,19 @@
             {% csrf_token %}
 
             <div class="linha_campos" id="linha_campos_1">
-                <div class="campo">
-                    <label for="descricao">Descrição </label>
-                    <input type="text" id="descricao" name="descricao" required>                    
-                </div>
-            </div>
-
-            <div class="linha_campos" id="linha_campos_2">
-                <div class="campo">
-                    <label for="nota_fiscal">Nota Fiscal </label>
-                    <input type="number" id="nota_fiscal" name="nota_fiscal" required>
-                </div>
-                <div class="campo">
-                    <label for="valor_custo">Custo Nota Fiscal </label>
-                    <input type="number" id="valor_custo" name="valor_custo" step="0.01" required>
+                <div class="linha_campos" id="campo_maior_1">
+                    <div class="campo">
+                        <label for="nota_fiscal">Nota Fiscal </label>
+                        <input type="number" id="nota_fiscal" name="nota_fiscal" required>
+                    </div>
+                    <div class="campo">
+                        <label for="duplicata">Duplicata </label>
+                        <input type="text" id="duplicata" name="duplicata" required>
+                    </div>
+                    <div class="campo">
+                        <label for="num_pedido">Número Pedido </label>
+                        <input type="number" id="num_pedido" name="num_pedido" required>
+                    </div>
                 </div>
                 <div class="campo">
                     <label for="data_compra" id="label_data_compra">Data da Compra </label>
@@ -40,7 +39,30 @@
                 </div>
             </div>
 
+            <div class="linha_campos" id="linha_campos_2">
+                <div class="campo">
+                    <label for="num_pedido">Valor Pago </label>
+                    <input type="number" id="valor_pago" name="valor_pago" required>
+                </div>
+                <div class="campo">
+                    <label for="custo_tabela">Custo Tabela </label>
+                    <input type="number" id="custo_tabela" name="custo_tabela" required>
+                </div>
+                <div class="campo">
+                    <label for="custo_site">Custo Site </label>
+                    <input type="text" id="custo_site" name="custo_site" required>
+                </div>
+                <div class="campo">
+                    <label for="valor_custo">Custo Nota Fiscal </label>
+                    <input type="number" id="valor_custo" name="valor_custo" step="0.01" required>
+                </div>
+            </div>
+                
             <div class="linha_campos" id="linha_campos_3">
+                <div class="campo">
+                    <label for="descricao">Descrição da Lente </label>
+                    <input type="text" id="descricao" name="descricao" required>                    
+                </div>
                 <div class="campo">
                     <label for="sequencial_prod">Sequencial (SavWin) </label>
                     <input type="number" id="sequencial_prod" name="sequencial_prod" required>
@@ -55,33 +77,10 @@
                 </div>
             </div>
 
-            <div class="linha_campos" id="linha_campos_3">
+            <div class="linha_campos" id="linha_campos_4">
                 <div class="campo">
-                    <label for="num_pedido">Número Pedido </label>
-                    <input type="number" id="num_pedido" name="num_pedido" required>
-                </div>
-                <div class="campo">
-                    <label for="custo_site">Custo Site </label>
-                    <input type="text" id="custo_site" name="custo_site" required>
-                </div>
-                <div class="campo">
-                    <label for="data_lib_blu">Data Liberação BLU </label>
+                    <label for="data_lib_blu" id="label_data_lib_blu">Data Liberação BLU </label>
                     <input type="date" id="data_lib_blu" name="data_lib_blu" required>
-                </div>
-            </div>
-
-            <div class="linha_campos" id="linha_campos_3">
-                <div class="campo">
-                    <label for="num_pedido">Valor Pago </label>
-                    <input type="number" id="valor_pago" name="valor_pago" required>
-                </div>
-                <div class="campo">
-                    <label for="custo_tabela">Custo Tabela </label>
-                    <input type="number" id="custo_tabela" name="custo_tabela" required>
-                </div>
-                <div class="campo">
-                    <label for="duplicata">Duplicata </label>
-                    <input type="text" id="duplicata" name="duplicata" required>
                 </div>
             </div>
 
