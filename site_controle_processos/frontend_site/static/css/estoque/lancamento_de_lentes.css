@@ -1,75 +1,92 @@
-/* LAYOUT GERAL */
 /* (.CLASSES) */
+.linha_campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 colunas iguais */
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
 .formulario {
-    display:grid;
+    display:grid;  
     align-content: center;
     width: 100%;
     padding: 10px;
     padding-bottom: 50px;
-}
-
-.linha_campos {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.botao-container {
-    display: flex;
-    justify-content: center; /* Centraliza o botão */
-    margin-top: 20px; /* Espaço acima do botão */
+    margin-top: 40px;
+    border-style: solid;
+    border-width: 1px;
 }
 
 /* (.SUB-CLASSES) */
-.linha_campos .campo {
+.campo {
+    display: flex;
     flex-direction: column;
-    flex: 1;
+    width: 100%;
 }
 
 /* ESTILOS ESPECÍFICOS */
 /* (#ID) */
-#campo_maior_1 {
-    flex: 3.12; /* Ocupa 2/3 do espaço */
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+#campo_data_lib_blu {
+    grid-column: 4; /* Posiciona na 4ª coluna */
 }
 
-#descricao {
-    max-width: 745px !important;
+#linha_campos_4 .campo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#data_compra,
+#data_lib_blu {
+    max-width: 150px;
+    color: rgb(93, 150, 255);
 }
 
 /* ESTILOS DE CAMPOS */
-/* (LABELS) */
+/* (LABELS, INPUTS, TEXTAREA) */
+#observacao {
+    height: 50px;
+}
 
-/* (INPUTS) */
-.formulario input[type='text'],
-.formulario input[type='number'] {
+#menu_lancamento {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     width: 100%;
+    position:fixed;
+    top: 43px;
+    left: 175px;
+    padding: 7px 0px 7px 15px;
+    background: #dddddd; /* Ou a cor que desejar */
+    z-index: 1000; /* Para ficar acima de outros elementos */
 }
 
-.formulario input[type='date'] {
-    width: 150px; /* Define um tamanho menor */    
-}
-
-/* (TEXT-AREA) */
-.formulario textarea[id='observacao'] {
-    height: 100px;
+/* ESTILOS DE BOTÕES */
+button {
     width: 100%;
-}
-
-/* (ESILOS DE BOTÕES) */
-button[type='submit'] {
-    width: 20%;
-    margin-top: 25px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+    max-width: 150px;
+    font-size: 12pt;
+    padding: 5px 40px 5px 40px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
+button[id='botao_gravar'] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button[id='botao_gravar']:hover {
     background-color: #45a049;
+}
+
+button[id='botao_update'] {
+    background-color: #fffc3f;
+    color: rgb(127, 127, 127);
+}
+
+button[id='botao_update']:hover {
+    background-color: #dfe161;
 }

@@ -1,4 +1,4 @@
-<!-- login.html -->
+<!-- lancamento_de_lentes.html -->
 {% extends "frontend_site/base/base.html" %}
 
 {% load static %}
@@ -14,28 +14,47 @@
 {% endblock %}
 
 {% block content %}
+    <div class="menu_lancamento" id="menu_lancamento">
+        <div class="botao_container">
+            <button type="button" onclick="document.getElementById('form_lancamento_lentes').submit()" id="botao_gravar">Gravar</button>
+        </div>
+        <div class="botao_container">
+            <button type="button" onclick="document.getElementById('form_lancamento_lentes').update()" id="botao_update">Atualizar</button>
+        </div>
+    </div>
     <div class="formulario" id="formulario_entrada">
-        <form action="{% url 'lancamento_de_lentes' %}" method="post">
+        <form action="{% url 'lancamento_de_lentes' %}" method="post" id="form_lancamento_lentes">
             {% csrf_token %}
-
             <div class="linha_campos" id="linha_campos_1">
-                <div class="linha_campos" id="campo_maior_1">
-                    <div class="campo">
-                        <label for="nota_fiscal">Nota Fiscal </label>
-                        <input type="number" id="nota_fiscal" name="nota_fiscal" required>
-                    </div>
-                    <div class="campo">
-                        <label for="duplicata">Duplicata </label>
-                        <input type="text" id="duplicata" name="duplicata" required>
-                    </div>
-                    <div class="campo">
-                        <label for="num_pedido">Número Pedido </label>
-                        <input type="number" id="num_pedido" name="num_pedido" required>
-                    </div>
+                <div class="campo">
+                    <label for="nota_fiscal">Nota Fiscal </label>
+                    <input type="number" id="nota_fiscal" name="nota_fiscal" required>
+                </div>
+                <div class="campo">
+                    <label for="duplicata">Duplicata </label>
+                    <input type="text" id="duplicata" name="duplicata" required>
+                </div>
+                <div class="campo">
+                    <label for="num_pedido">Número Pedido </label>
+                    <input type="number" id="num_pedido" name="num_pedido" required>
                 </div>
                 <div class="campo">
                     <label for="data_compra" id="label_data_compra">Data da Compra </label>
                     <input type="date" id="data_compra" name="data_compra" required>
+                </div>
+            </div>
+            <div class="linha_campos" id="linha_campos_1">
+                <div class="campo">
+                    <label for="ordem_de_servico">Ordem de Serviço </label>
+                    <input type="number" id="ordem_de_servico" name="ordem_de_servico" required>
+                </div>
+                <div class="campo">
+                    <label for="num_loja">Loja </label>
+                    <input type="number" id="num_loja" name="num_loja" required>
+                </div>
+                <div class="campo">
+                    <label for="codigo">Código </label>
+                    <input type="number" id="codig" name="codigo" required>
                 </div>
             </div>
 
@@ -50,7 +69,7 @@
                 </div>
                 <div class="campo">
                     <label for="custo_site">Custo Site </label>
-                    <input type="text" id="custo_site" name="custo_site" required>
+                    <input type="number" id="custo_site" name="custo_site" required>
                 </div>
                 <div class="campo">
                     <label for="valor_custo">Custo Nota Fiscal </label>
@@ -65,31 +84,37 @@
                 </div>
                 <div class="campo">
                     <label for="sequencial_prod">Sequencial (SavWin) </label>
-                    <input type="number" id="sequencial_prod" name="sequencial_prod" required>
+                    <input 
+                        type="number"
+                        id="sequencial_prod"
+                        name="sequencial_prod"
+                        min="1" 
+                        max="99999999"
+                        title="Digite um número entre 1 e 99.999.999"
+                        required>
                 </div>
                 <div class="campo">
                     <label for="ref_fabricante">Referência Fabricante </label>
                     <input type="text" id="ref_fabricante" name="ref_fabricante" required>
                 </div>
-                <div class="campo">
-                    <label for="codigo">Código </label>
-                    <input type="number" id="codig" name="codigo" required>
-                </div>
             </div>
 
             <div class="linha_campos" id="linha_campos_4">
-                <div class="campo">
+                <div class="campo" id="campo_data_lib_blu">
                     <label for="data_lib_blu" id="label_data_lib_blu">Data Liberação BLU </label>
-                    <input type="date" id="data_lib_blu" name="data_lib_blu" required>
+                    <input type="date" id="data_lib_blu" name="data_lib_blu">
                 </div>
             </div>
 
-            <label for="observacao">Observacão</label>
-            <textarea id="observacao" name="observacao"></textarea>  
-
-            <div class="botao-container">
-                <button type="submit">Enviar</button>
+            <div class="campo">
+                <label for="observacao">Observacão</label>
+                <textarea id="observacao" name="observacao"></textarea>  
             </div>
         </form>
+        {% if messages %}
+            {% for message in messages %}
+                {{message}}
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}

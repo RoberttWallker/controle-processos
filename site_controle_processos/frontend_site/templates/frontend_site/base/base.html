@@ -27,8 +27,14 @@
         <div id="barra_lateral">
             <nav>
                 <ul>
-                    <li><a href="{% url 'lancamento_de_lentes' %}">Lançamento de Lentes</a></li>
-                    <li><a href="">Serviços</a></li>
+                    <li><a href="{% url 'admin_panel'%}">Painel Administrativo</a></li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0)" class="submenu-trigger">Estoque</a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'lancamento_de_lentes' %}">Lançamento de Lentes</a></li>
+                            <li><a href="{% url 'listagem_lancamentos'%}">Listagem de Lançamentos</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>

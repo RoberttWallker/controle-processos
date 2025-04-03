@@ -108,7 +108,7 @@ body {
 }
 
 #barra_lateral a:hover {
-    text-decoration: underline; /* Adiciona o sublinhado ao passar o mouse */
+    text-decoration: none; /* Adiciona o sublinhado ao passar o mouse */
     background-color: rgba(255, 255, 255, 0.2); /* Efeito de fundo opcional */
 }
 
@@ -122,9 +122,29 @@ body {
 .formulario input[type='text'],
 .formulario input[type='number'],
 .formulario input[type='date'] {
-    width: 95%;
+    width: 100%;
     padding: 5px;
     margin: 5px 0 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+/* Estilos básicos para o submenu */
+.submenu {
+    display: none;
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+.menu-item:hover .submenu {
+    display: block;
+}
+
+.submenu-trigger::after {
+    content: " ▼";
+    font-size: 0.8em;
+}
+
+.menu-item:hover .submenu-trigger::after {
+    content: " ▲";
 }

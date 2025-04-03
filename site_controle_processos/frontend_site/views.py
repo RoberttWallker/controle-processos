@@ -76,28 +76,94 @@ def admin_panel_view(request):
 @login_required
 def lanc_lentes_view(request):
     if request.method == 'POST':
-        descricao = request.POST['descricao']
-        nota_fiscal = request.POST['nota_fiscal']
-        valor_custo = request.POST['valor_custo']
-        data_compra = request.POST['data_compra']
-        sequencial_prod = request.POST['sequencial_prod']
-        ref_fabricante = request.POST['ref_fabricante']
-        observacao = request.POST['observacao']
+        try:
+            # Converte para dicionário mutável
+            post_data = request.POST.dict()
 
-        # Criar objeto e salvar no banco
-        compra = ComprasLentes.objects.create(
-            descricao=descricao,
-            nota_fiscal=nota_fiscal,
-            valor_custo=valor_custo,
-            data_compra=data_compra,
-            sequencial=sequencial_prod,
-            referencia_fabricante=ref_fabricante,
-            observacao=observacao
-        )
+            # Tratamento campos opcionais
+            data_lib_blu = post_data.get('data_lib_blu') or None
+            
+            # Criação direta sem variáveis intermediárias
+            ComprasLentes.objects.create(
+                descricao_lente=post_data['descricao'],
+                nota_fiscal=post_data['nota_fiscal'],
+                custo_nota_fiscal=float(post_data['valor_custo']),
+                data_compra=post_data['data_compra'],
+                sequencial_savwin=post_data['sequencial_prod'],
+                referencia_fabricante=post_data['ref_fabricante'],
+                observacao=post_data['observacao'],
+                ordem_servico=post_data['ordem_de_servico'],
+                loja=post_data['num_loja'],
+                codigo=post_data['codigo'],
+                numero_pedido=post_data['num_pedido'],
+                custo_site=float(post_data['custo_site']),
+                data_liberacao_blu=data_lib_blu,
+                valor_pago=float(post_data['valor_pago']),
+                custo_tabela=float(post_data['custo_tabela']),
+                duplicata=post_data['duplicata']
+            )
 
-        if compra:
             messages.success(request, "Entrada efetuada com sucesso.")
             return redirect('lancamento_de_lentes')
+        
+        except KeyError as e:
+            messages.error(request, f"Campo obrigatório faltando: {e}")
+        except ValueError as e:
+            messages.error(request, f"Valor numérico inválido: {e}")
+        except Exception as e:
+            messages.error(request, f"Erro ao salvar: {str(e)}")
 
     return render(request, 'frontend_site/estoque/lancamento_de_lentes.html')
+
+def listagem_lancamentos_view(request):
+    dados = None
+    filtro_aplicado = False
     
+    base_queryset = ComprasLentes.objects.defer(
+        'usuario_criacao',
+        'data_criacao',
+        'usuario_atualizacao',
+        'data_atualizacao'
+    )
+
+    colunas = [
+        'data_compra',
+        'ordem_servico',
+        'sequencial_savwin',
+        'loja',
+        'codigo',
+        'descricao_lente',
+        'referencia_fabricante',
+        'numero_pedido',
+        'custo_site',
+        'data_liberacao_blu',
+        'valor_pago',
+        'custo_tabela',
+        'nota_fiscal',
+        'custo_nota_fiscal',
+        'duplicata',
+        'observacao'
+    ]
+
+    if request.method == 'GET':
+        identificador = request.GET.get('identificador', '')
+        valor = request.GET.get('valor_identificador', '')
+
+         # Aplicar filtros se existirem
+        if identificador and valor:
+            filtro_aplicado = True
+
+            if identificador == 'nota_fiscal':
+                dados = base_queryset.filter(nota_fiscal=valor)
+            elif identificador == 'duplicata':
+                dados = base_queryset.filter(duplicata=valor)
+            elif identificador == 'pedido':
+                dados = base_queryset.filter(numero_pedido=valor)
+
+    return render(request, 'frontend_site/estoque/listagem_lancamentos.html', {
+        'colunas': colunas,
+        'dados': dados,
+        'filtro_aplicado': filtro_aplicado,
+        'identificador': request.GET.get('identificador', ''),
+        'valor_identificador': request.GET.get('valor_identificador', '')
+    })   

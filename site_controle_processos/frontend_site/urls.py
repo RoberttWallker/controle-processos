@@ -5,7 +5,8 @@ from .views import (
     login_view,
     register_view,
     admin_panel_view,
-    lanc_lentes_view
+    lanc_lentes_view,
+    listagem_lancamentos_view
     )
 
 urlpatterns = [
@@ -41,4 +42,5 @@ urlpatterns = [
     path('admin-panel/', admin_panel_view, name='admin_panel'),
     path('register/', register_view, name='register'),
     path('lancamento-de-lentes/', lanc_lentes_view, name='lancamento_de_lentes'),
+    path('listagem-lancamentos/', listagem_lancamentos_view, name='listagem_lancamentos')
 ]

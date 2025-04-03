@@ -1,0 +1,22 @@
+/* admin_panel.css */
+/* (.CLASSES) */
+.container_secundario {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    justify-content: center;
+    background-color: rgb(63, 220, 244);
+}
+
+.caixa {
+    width: 300px;
+    max-width: 300px;
+    height: 150px;
+    max-height: 150px;
+    background: rgb(255, 255, 255);
+    padding: 10px;
+    margin: 10px;
+    color: red;
+    text-align: center;
+    align-content: center;
+}

@@ -1,0 +1,74 @@
+<!-- listagem_lancamentos.html -->
+{% extends "frontend_site/base/base.html" %}
+
+{% load static %}
+
+{% block title %}Listagem de Lançamentos{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estoque/listagem_lancamentos.css' %}">
+{% endblock %}
+
+{% block header_title %}
+    Listagem de Lançamentos
+{% endblock %}
+
+{% block content %}
+    <div class="linha_campos menu_botoes">
+        <div class="botao_container">
+            <button type="button" onclick="document.getElementById('form_filtro_lancamentos').submit()" id="botao_pesquisar">Pesquisar</button>
+        </div>
+    </div>
+
+    <form id="form_filtro_lancamentos" method="get">
+        <div class="linha_campos">
+            <div class="container_filtros">
+                <label for="identificador">Identificador: </label>
+                <select name="identificador" id="identificador">
+                    <option value="nota_fiscal">Nota Fiscal</option>
+                    <option value="duplicata">Duplicata</option>
+                    <option value="pedido">Pedido</option>
+                </select>
+                <input type="text" name="valor_identificador" id="valor_identificador">
+            </div>
+        </div>
+    </form>
+
+    <div class="container_relatorio">
+        <table id="tabela_lancamentos">
+            <thead>
+                <tr>
+                    {% for coluna in colunas %}
+                        <th>{{ coluna|title }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in dados %}
+                    <tr>
+                        <td>{{ item.data_compra }}</td>
+                        <td>{{ item.ordem_servico }}</td>
+                        <td>{{ item.sequencial_savwin }}</td>
+                        <td>{{ item.loja }}</td>
+                        <td>{{ item.codigo }}</td>
+                        <td>{{ item.descricao_lente }}</td>
+                        <td>{{ item.referencia_fabricante }}</td>
+                        <td>{{ item.numero_pedido }}</td>
+                        <td>{{ item.custo_site }}</td>
+                        <td>{{ item.data_liberacao_blu }}</td>
+                        <td>{{ item.valor_pago }}</td>
+                        <td>{{ item.custo_tabela }}</td>
+                        <td>{{ item.nota_fiscal }}</td>
+                        <td>{{ item.custo_nota_fiscal }}</td>
+                        <td>{{ item.duplicata }}</td>
+                        <td>{{ item.observacao }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="{{ colunas|length }}">Nenhum registro encontrado</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
