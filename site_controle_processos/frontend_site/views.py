@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import ComprasLentes
+from .aux_function import data_para_formato_iso
 
 # Create your views here.
 def logout_view(request):
@@ -127,20 +128,20 @@ def listagem_lancamentos_view(request):
     )
 
     colunas = [
-        'data_compra',
-        'ordem_servico',
-        'sequencial_savwin',
+        'data compra',
+        'ordem servico',
+        'sequencial savwin',
         'loja',
         'codigo',
-        'descricao_lente',
-        'referencia_fabricante',
-        'numero_pedido',
-        'custo_site',
-        'data_liberacao_blu',
-        'valor_pago',
-        'custo_tabela',
-        'nota_fiscal',
-        'custo_nota_fiscal',
+        'descricao lente',
+        'referencia fabricante',
+        'numero pedido',
+        'custo site',
+        'data liberacao blu',
+        'valor pago',
+        'custo tabela',
+        'nota fiscal',
+        'custo nota fiscal',
         'duplicata',
         'observacao'
     ]
@@ -157,8 +158,16 @@ def listagem_lancamentos_view(request):
                 dados = base_queryset.filter(nota_fiscal=valor)
             elif identificador == 'duplicata':
                 dados = base_queryset.filter(duplicata=valor)
-            elif identificador == 'pedido':
+            elif identificador == 'numero_pedido':
                 dados = base_queryset.filter(numero_pedido=valor)
+            elif identificador == 'ordem_servico':
+                dados = base_queryset.filter(ordem_servico=valor)
+            elif identificador == 'loja':
+                dados = base_queryset.filter(loja=valor)
+            elif identificador == 'data_compra':
+                valor = data_para_formato_iso(valor)
+                dados = base_queryset.filter(data_compra=valor)
+                
 
     return render(request, 'frontend_site/estoque/listagem_lancamentos.html', {
         'colunas': colunas,

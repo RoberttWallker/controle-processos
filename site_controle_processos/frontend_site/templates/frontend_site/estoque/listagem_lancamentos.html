@@ -27,7 +27,10 @@
                 <select name="identificador" id="identificador">
                     <option value="nota_fiscal">Nota Fiscal</option>
                     <option value="duplicata">Duplicata</option>
-                    <option value="pedido">Pedido</option>
+                    <option value="numero_pedido">Pedido</option>
+                    <option value="ordem_servico">Ordem de Serviço</option>
+                    <option value="loja">Loja</option>
+                    <option value="data_compra">Data da Compra</option>
                 </select>
                 <input type="text" name="valor_identificador" id="valor_identificador">
             </div>
@@ -46,7 +49,7 @@
             <tbody>
                 {% for item in dados %}
                     <tr>
-                        <td>{{ item.data_compra }}</td>
+                        <td>{{ item.data_compra|date:"d/m/Y" }}</td>
                         <td>{{ item.ordem_servico }}</td>
                         <td>{{ item.sequencial_savwin }}</td>
                         <td>{{ item.loja }}</td>
@@ -55,7 +58,7 @@
                         <td>{{ item.referencia_fabricante }}</td>
                         <td>{{ item.numero_pedido }}</td>
                         <td>{{ item.custo_site }}</td>
-                        <td>{{ item.data_liberacao_blu }}</td>
+                        <td>{{ item.data_liberacao_blu|date:"d/m/Y" }}</td>
                         <td>{{ item.valor_pago }}</td>
                         <td>{{ item.custo_tabela }}</td>
                         <td>{{ item.nota_fiscal }}</td>
