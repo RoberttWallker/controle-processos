@@ -16,15 +16,27 @@
 {% block content %}
     <div class="menu_lancamento" id="menu_lancamento">
         <div class="botao_container">
-            <button type="button" onclick="document.getElementById('form_lancamento_lentes').submit()" id="botao_gravar">Gravar</button>
+            <button type="button" id="botao_gravar">Gravar</button>
         </div>
         <div class="botao_container">
-            <button type="button" onclick="document.getElementById('form_lancamento_lentes').update()" id="botao_update">Atualizar</button>
+            <button type="button" id="botao_update">Atualizar</button>
         </div>
     </div>
     <div class="formulario" id="formulario_entrada">
         <form action="{% url 'lancamento_de_lentes' %}" method="post" id="form_lancamento_lentes">
             {% csrf_token %}
+            <div class="linha_campos" id="linha_campos_0">
+                <div class="campo">
+                    <label for="id">ID de Lançamento</label>
+                    <input type="number"
+                           id="id"
+                           name="id"
+                           value="{{ proximo_id }}"
+                           readonly
+                           class="campo-id"
+                           >
+                </div>
+            </div>
             <div class="linha_campos" id="linha_campos_1">
                 <div class="campo">
                     <label for="nota_fiscal">Nota Fiscal </label>
@@ -54,7 +66,7 @@
                 </div>
                 <div class="campo">
                     <label for="codigo">Código </label>
-                    <input type="number" id="codig" name="codigo" required>
+                    <input type="number" id="codigo" name="codigo" required>
                 </div>
             </div>
 
@@ -72,8 +84,8 @@
                     <input type="number" id="custo_site" name="custo_site" required>
                 </div>
                 <div class="campo">
-                    <label for="valor_custo">Custo Nota Fiscal </label>
-                    <input type="number" id="valor_custo" name="valor_custo" step="0.01" required>
+                    <label for="custo_nota_fiscal">Custo Nota Fiscal </label>
+                    <input type="number" id="custo_nota_fiscal" name="custo_nota_fiscal" step="0.01" required>
                 </div>
             </div>
                 
@@ -117,4 +129,9 @@
             {% endfor %}
         {% endif %}
     </div>
+    <script>
+        // Passa as variáveis para o JavaScript global
+        window.djangoContextData = '{{ django_context_json|escapejs }}';
+    </script>
+    <script src="{% static 'js/estoque/lancamento_de_lentes.js' %}"></script>
 {% endblock %}
