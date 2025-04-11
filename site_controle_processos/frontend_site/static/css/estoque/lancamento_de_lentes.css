@@ -27,7 +27,7 @@
 
 /* ESTILOS ESPECÍFICOS */
 /* (#ID) */
-#campo_data_lib_blu {
+#campo_data_liberacao_blu {
     grid-column: 4; /* Posiciona na 4ª coluna */
 }
 
@@ -38,7 +38,7 @@
 }
 
 #data_compra,
-#data_lib_blu {
+#data_liberacao_blu {
     max-width: 150px;
     color: rgb(93, 150, 255);
 }
@@ -90,3 +90,4 @@ button[id='botao_update'] {
 button[id='botao_update']:hover {
     background-color: #dfe161;
 }
+

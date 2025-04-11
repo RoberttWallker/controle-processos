@@ -38,19 +38,19 @@ function preencherFormularioEdicao(registroEdicao) {
     // Mapeamento de campos (nome do campo no model -> id no HTML)
     const fieldMap = {
         'id': 'id',
-        'descricao_lente': 'descricao',
+        'descricao_lente': 'descricao_lente',
         'nota_fiscal': 'nota_fiscal',
         'custo_nota_fiscal': 'custo_nota_fiscal',
         'data_compra': 'data_compra',
-        'sequencial_savwin': 'sequencial_prod',
-        'referencia_fabricante': 'ref_fabricante',
+        'sequencial_savwin': 'sequencial_savwin',
+        'referencia_fabricante': 'referencia_fabricante',
         'observacao': 'observacao',
-        'ordem_servico': 'ordem_de_servico',
-        'loja': 'num_loja',
+        'ordem_de_servico': 'ordem_de_servico',
+        'num_loja': 'num_loja',
         'codigo': 'codigo',
-        'numero_pedido': 'num_pedido',
+        'num_pedido': 'num_pedido',
         'custo_site': 'custo_site',
-        'data_liberacao_blu': 'data_lib_blu',
+        'data_liberacao_blu': 'data_liberacao_blu',
         'valor_pago': 'valor_pago',
         'custo_tabela': 'custo_tabela',
         'duplicata': 'duplicata'
@@ -82,7 +82,8 @@ function preencherFormularioEdicao(registroEdicao) {
     if (idField) {
         idField.readOnly = true;
     }
-    
+
+
     // Configura os botões para modo edição
     const gravarBtn = document.getElementById('botao_gravar');
     const atualizarBtn = document.getElementById('botao_update');
@@ -99,6 +100,29 @@ function preencherFormularioEdicao(registroEdicao) {
         atualizarBtn.style.cursor = 'pointer';
         atualizarBtn.onclick = atualizarRegistro;
     }
+
+    const elementosBloqueados = [
+            'nota_fiscal',
+            'duplicata',
+            'num_pedido',
+            'data_compra',
+            'ordem_de_servico',
+            'num_loja',
+            'codigo'
+        ];
+
+        elementosBloqueados.forEach(campoId => {
+        const elemento = document.getElementById(campoId);
+        if (elemento) {
+            elemento.readOnly = true;
+            elemento.style.opacity = '0.7';
+            elemento.style.backgroundColor = '#f5f5f5';
+            elemento.title = "Este campo não pode ser editado em modo de edição";
+        }
+    })
+    
+
+
 }
 
 function configurarModoCriacao() {

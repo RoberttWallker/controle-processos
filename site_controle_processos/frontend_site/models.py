@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class ComprasLentes(models.Model):
     data_compra = models.DateField(blank=False, null=False)
-    ordem_servico = models.TextField(max_length=50, blank=False, null=False)
+    ordem_de_servico = models.TextField(max_length=50, blank=False, null=False)
     sequencial_savwin = models.IntegerField(
         blank=False,
         null=False,
@@ -16,11 +16,11 @@ class ComprasLentes(models.Model):
         ],
         help_text="Número entre 1 e 99.999.999"
     )
-    loja = models.IntegerField(blank=False, null=False)
+    num_loja = models.IntegerField(blank=False, null=False)
     codigo = models.IntegerField(blank=False, null=False)
     descricao_lente = models.TextField(max_length=255, blank=False, null=False)
     referencia_fabricante = models.TextField(max_length=100, blank=True, null=True)
-    numero_pedido = models.IntegerField(blank=False, null=False)
+    num_pedido = models.IntegerField(blank=False, null=False)
     custo_site = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
     data_liberacao_blu = models.DateField(blank=True, null=True)
     valor_pago = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)

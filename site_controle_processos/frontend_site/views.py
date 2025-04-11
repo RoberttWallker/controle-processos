@@ -7,9 +7,71 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import ComprasLentes
 from .aux_function import data_para_formato_iso
-from django.core.serializers import serialize
+from django.core.exceptions import BadRequest
 
-# Create your views here.
+#Funções auxiliares do banco de dados
+def getRegistroLancamentoDeLentes(id_edicao, request):
+    try:
+        registro_edicao = ComprasLentes.objects.get(id=id_edicao)
+        # Prepara os dados para o template
+        registro_data = {
+            'id': registro_edicao.id, # type: ignore
+            'descricao_lente': registro_edicao.descricao_lente,
+            'nota_fiscal': registro_edicao.nota_fiscal,
+            'custo_nota_fiscal': float(registro_edicao.custo_nota_fiscal),
+            'data_compra': registro_edicao.data_compra.strftime('%Y-%m-%d') if registro_edicao.data_compra else '',
+            'sequencial_savwin': registro_edicao.sequencial_savwin,
+            'referencia_fabricante': registro_edicao.referencia_fabricante,
+            'observacao': registro_edicao.observacao or '',
+            'ordem_de_servico': registro_edicao.ordem_de_servico,
+            'num_loja': registro_edicao.num_loja,
+            'codigo': registro_edicao.codigo,
+            'num_pedido': registro_edicao.num_pedido,
+            'custo_site': float(registro_edicao.custo_site),
+            'data_liberacao_blu': registro_edicao.data_liberacao_blu.strftime('%Y-%m-%d') if registro_edicao.data_liberacao_blu else '',
+            'valor_pago': float(registro_edicao.valor_pago),
+            'custo_tabela': float(registro_edicao.custo_tabela),
+            'duplicata': registro_edicao.duplicata
+        }
+        return {
+            'model': registro_edicao, #Retorna o objeto do banco de dados (para updates)
+            'data': registro_data #Retorna dicinário formatado (para templates)
+        }
+    
+    except ComprasLentes.DoesNotExist:
+        messages.warning(request, f"Registro com ID {id_edicao} não encontrado")
+        return None
+    
+def atualizarRegistroLancamentoDeLentes(id_edicao, model, request):
+    for attr in request.POST:
+        if attr in ['csrfmiddlewaretoken', '_method']:  # Ignora campos especiais
+            continue
+
+        if hasattr(model, attr):
+            field = model._meta.get_field(attr)
+            field_new_value = request.POST[attr]
+
+            # Conversão de tipos
+            if field.get_internal_type() in ('FloatField', 'DecimalField'):
+                field_new_value = float(field_new_value) if field_new_value else 0.0
+            elif field.get_internal_type() == 'DateField':
+                field_new_value = data_para_formato_iso(field_new_value) if field_new_value else None
+            elif field.get_internal_type() == 'IntegerField':
+                field_new_value = int(field_new_value) if field_new_value else 0
+            elif field.get_internal_type() in ('TextField', 'CharField'):
+                field_new_value = str(field_new_value) if field_new_value else ''
+            elif field.get_internal_type() == 'BooleanField':
+                field_new_value = field_new_value.lower() in ('true', '1', 'yes') if field_new_value else False
+
+            setattr(model, attr, field_new_value)
+
+        else:
+            print(f"O campo {attr} não existe no modelo")
+
+    model.save()
+    messages.success(request, f"Registro ID {id_edicao} atualizado com sucesso!")
+
+#Views de registro e autenticação
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -73,6 +135,7 @@ def register_view(request):
 
     return render(request, 'frontend_site/auth/register.html')
 
+#Views de páginas do sistema
 @login_required
 def admin_panel_view(request):
     return render(request, 'frontend_site/admin_panel/admin_panel.html')
@@ -88,38 +151,24 @@ def lanc_lentes_view(request):
 
     # Verifica se foi passado um ID para edição (via GET)
     id_edicao = request.GET.get('id')
-    modo_edicao = request.GET.get('edit') == 'true'  # Novo parâmetro para identificar edição
 
-    registro_edicao = None
+    modo_edicao = request.GET.get('edit') == 'true'  # Parâmetro para identificar edição
+    registro_data = None
     
     if id_edicao and modo_edicao:
         try:
-            registro_edicao = ComprasLentes.objects.get(id=id_edicao)
-            
-            # Prepara os dados para o template
-            registro_data = {
-                'id': registro_edicao.id, # type: ignore
-                'descricao_lente': registro_edicao.descricao_lente,
-                'nota_fiscal': registro_edicao.nota_fiscal,
-                'custo_nota_fiscal': float(registro_edicao.custo_nota_fiscal),
-                'data_compra': registro_edicao.data_compra.strftime('%Y-%m-%d') if registro_edicao.data_compra else '',
-                'sequencial_savwin': registro_edicao.sequencial_savwin,
-                'referencia_fabricante': registro_edicao.referencia_fabricante,
-                'observacao': registro_edicao.observacao or '',
-                'ordem_servico': registro_edicao.ordem_servico,
-                'loja': registro_edicao.loja,
-                'codigo': registro_edicao.codigo,
-                'numero_pedido': registro_edicao.numero_pedido,
-                'custo_site': float(registro_edicao.custo_site),
-                'data_liberacao_blu': registro_edicao.data_liberacao_blu.strftime('%Y-%m-%d') if registro_edicao.data_liberacao_blu else '',
-                'valor_pago': float(registro_edicao.valor_pago),
-                'custo_tabela': float(registro_edicao.custo_tabela),
-                'duplicata': registro_edicao.duplicata
-            }
+            id_edicao = int(id_edicao)  # Garante que é um número
+        except ValueError:
+            raise BadRequest("ID de edição inválido")
         
-        except ComprasLentes.DoesNotExist:
-            messages.warning(request, f"Registro com ID {id_edicao} não encontrado")
-            registro_data = None
+        try:            
+            registro_info = getRegistroLancamentoDeLentes(id_edicao=id_edicao, request=request)
+            
+            if not registro_info:
+                return redirect('lancamento_de_lentes')
+                
+            registro_data = registro_info['data']
+        
         except Exception as e:
             messages.error(request, f"Erro ao buscar registro: {str(e)}")
             registro_data = None
@@ -127,51 +176,38 @@ def lanc_lentes_view(request):
         registro_data = None
 
     if request.method == 'POST':
-                # Verifica se é uma atualização (PUT via POST)
+        # Verifica se é uma atualização (PUT via POST)
         if request.POST.get('_method') == 'PUT':
             id_edicao = request.GET.get('id')
+
             if not id_edicao:
                 messages.error(request, "ID do registro não fornecido para atualização")
                 return redirect('lancamento_de_lentes')
             
             try:
-                registro = ComprasLentes.objects.get(id=id_edicao)
-                
-                # Atualiza os campos
-                registro.descricao_lente = request.POST['descricao']
-                registro.nota_fiscal = request.POST['nota_fiscal']
-                registro.custo_nota_fiscal = float(request.POST['custo_nota_fiscal'])
-                registro.data_compra = request.POST['data_compra']
-                registro.sequencial_savwin = request.POST['sequencial_prod']
-                registro.referencia_fabricante = request.POST['ref_fabricante']
-                registro.observacao = request.POST['observacao']
-                registro.ordem_servico = request.POST['ordem_de_servico']
-                registro.loja = request.POST['num_loja']
-                registro.codigo = request.POST['codigo']
-                registro.numero_pedido = request.POST['num_pedido']
-                registro.custo_site = float(request.POST['custo_site'])
-                registro.data_liberacao_blu = request.POST.get('data_lib_blu') or None
-                registro.valor_pago = float(request.POST['valor_pago'])
-                registro.custo_tabela = float(request.POST['custo_tabela'])
-                registro.duplicata = request.POST['duplicata']
-                
-                registro.save()
-                messages.success(request, f"Registro ID {id_edicao} atualizado com sucesso!")
-                return redirect('lancamento_de_lentes')
+                registro_info = getRegistroLancamentoDeLentes(id_edicao=id_edicao, request=request)
             
-            except ComprasLentes.DoesNotExist:
-                messages.error(request, f"Registro com ID {id_edicao} não encontrado")
+                if not registro_info:
+                    return redirect('lancamento_de_lentes')
+                
+                registro_model = registro_info['model']
+
+                atualizarRegistroLancamentoDeLentes(id_edicao=id_edicao, model=registro_model, request=request)
+                    
+                return redirect('lancamento_de_lentes')
+
             except Exception as e:
                 messages.error(request, f"Erro ao atualizar registro: {str(e)}")
             
             return redirect('lancamento_de_lentes')
         
+        #Lançamento de compra de lentes
         try:
             # Converte para dicionário mutável
             post_data = request.POST.dict()
 
             # Tratamento campos opcionais
-            data_lib_blu = post_data.get('data_lib_blu') or None
+            data_liberacao_blu = post_data.get('data_liberacao_blu') or None
             
             try:
                 # Extrai o ID esperado do post_data (se existir)
@@ -181,19 +217,19 @@ def lanc_lentes_view(request):
                 try:
                     obj = ComprasLentes.objects.create(
                         id=expected_id,
-                        descricao_lente=post_data['descricao'],
+                        descricao_lente=post_data['descricao_lente'],
                         nota_fiscal=post_data['nota_fiscal'],
                         custo_nota_fiscal=float(post_data['custo_nota_fiscal']),
                         data_compra=post_data['data_compra'],
-                        sequencial_savwin=post_data['sequencial_prod'],
-                        referencia_fabricante=post_data['ref_fabricante'],
+                        sequencial_savwin=post_data['sequencial_savwin'],
+                        referencia_fabricante=post_data['referencia_fabricante'],
                         observacao=post_data['observacao'],
-                        ordem_servico=post_data['ordem_de_servico'],
-                        loja=post_data['num_loja'],
+                        ordem_de_servico=post_data['ordem_de_servico'],
+                        num_loja=post_data['num_loja'],
                         codigo=post_data['codigo'],
-                        numero_pedido=post_data['num_pedido'],
+                        num_pedido=post_data['num_pedido'],
                         custo_site=float(post_data['custo_site']),
-                        data_liberacao_blu=data_lib_blu,
+                        data_liberacao_blu=data_liberacao_blu,
                         valor_pago=float(post_data['valor_pago']),
                         custo_tabela=float(post_data['custo_tabela']),
                         duplicata=post_data['duplicata']
@@ -205,19 +241,19 @@ def lanc_lentes_view(request):
                     novo_id = ComprasLentes.objects.latest('id').id + 1 # type: ignore
                     obj = ComprasLentes.objects.create(
                         id=novo_id,
-                        descricao_lente=post_data['descricao'],
+                        descricao_lente=post_data['descricao_lente'],
                         nota_fiscal=post_data['nota_fiscal'],
                         custo_nota_fiscal=float(post_data['custo_nota_fiscal']),
                         data_compra=post_data['data_compra'],
-                        sequencial_savwin=post_data['sequencial_prod'],
-                        referencia_fabricante=post_data['ref_fabricante'],
+                        sequencial_savwin=post_data['sequencial_savwin'],
+                        referencia_fabricante=post_data['referencia_fabricante'],
                         observacao=post_data['observacao'],
-                        ordem_servico=post_data['ordem_de_servico'],
-                        loja=post_data['num_loja'],
+                        ordem_de_servico=post_data['ordem_de_servico'],
+                        num_loja=post_data['num_loja'],
                         codigo=post_data['codigo'],
-                        numero_pedido=post_data['num_pedido'],
+                        num_pedido=post_data['num_pedido'],
                         custo_site=float(post_data['custo_site']),
-                        data_liberacao_blu=data_lib_blu,
+                        data_liberacao_blu=data_liberacao_blu,
                         valor_pago=float(post_data['valor_pago']),
                         custo_tabela=float(post_data['custo_tabela']),
                         duplicata=post_data['duplicata']
@@ -267,7 +303,7 @@ def listagem_lancamentos_view(request):
     colunas = [
         'id lancamento',
         'data compra',
-        'ordem servico',
+        'ordem de servico',
         'sequencial savwin',
         'loja',
         'codigo',
@@ -299,9 +335,9 @@ def listagem_lancamentos_view(request):
             elif identificador == 'numero_pedido':
                 dados = base_queryset.filter(numero_pedido=valor)
             elif identificador == 'ordem_servico':
-                dados = base_queryset.filter(ordem_servico=valor)
+                dados = base_queryset.filter(ordem_de_servico=valor)
             elif identificador == 'loja':
-                dados = base_queryset.filter(loja=valor)
+                dados = base_queryset.filter(num_loja=valor)
             elif identificador == 'data_compra':
                 valor = data_para_formato_iso(valor)
                 dados = base_queryset.filter(data_compra=valor)
