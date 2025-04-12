@@ -1,13 +1,16 @@
 import json
-from django.db import IntegrityError
-from django.shortcuts import render, redirect
+
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import ComprasLentes
-from .aux_function import data_para_formato_iso
+from django.contrib.auth.models import User
 from django.core.exceptions import BadRequest
+from django.db import IntegrityError
+from django.shortcuts import redirect, render
+
+from .aux_function import atualizarRegistro, data_para_formato_iso, proximoId
+from .models import ComprasLentes
+
 
 #Funções auxiliares do banco de dados
 def getRegistroLancamentoDeLentes(id_edicao, request):
@@ -42,35 +45,6 @@ def getRegistroLancamentoDeLentes(id_edicao, request):
         messages.warning(request, f"Registro com ID {id_edicao} não encontrado")
         return None
     
-def atualizarRegistroLancamentoDeLentes(id_edicao, model, request):
-    for attr in request.POST:
-        if attr in ['csrfmiddlewaretoken', '_method']:  # Ignora campos especiais
-            continue
-
-        if hasattr(model, attr):
-            field = model._meta.get_field(attr)
-            field_new_value = request.POST[attr]
-
-            # Conversão de tipos
-            if field.get_internal_type() in ('FloatField', 'DecimalField'):
-                field_new_value = float(field_new_value) if field_new_value else 0.0
-            elif field.get_internal_type() == 'DateField':
-                field_new_value = data_para_formato_iso(field_new_value) if field_new_value else None
-            elif field.get_internal_type() == 'IntegerField':
-                field_new_value = int(field_new_value) if field_new_value else 0
-            elif field.get_internal_type() in ('TextField', 'CharField'):
-                field_new_value = str(field_new_value) if field_new_value else ''
-            elif field.get_internal_type() == 'BooleanField':
-                field_new_value = field_new_value.lower() in ('true', '1', 'yes') if field_new_value else False
-
-            setattr(model, attr, field_new_value)
-
-        else:
-            print(f"O campo {attr} não existe no modelo")
-
-    model.save()
-    messages.success(request, f"Registro ID {id_edicao} atualizado com sucesso!")
-
 #Views de registro e autenticação
 def logout_view(request):
     logout(request)
@@ -142,13 +116,6 @@ def admin_panel_view(request):
 
 @login_required
 def lanc_lentes_view(request):
-    # Calcula o próximo ID disponível
-    try:
-        ultimo_id = ComprasLentes.objects.all().order_by('-id').first()
-        proximo_id = (ultimo_id.id + 1) if ultimo_id else 1 # type: ignore
-    except Exception as e:
-        proximo_id = 1  # Fallback caso ocorra algum erro
-
     # Verifica se foi passado um ID para edição (via GET)
     id_edicao = request.GET.get('id')
 
@@ -175,6 +142,7 @@ def lanc_lentes_view(request):
     else:
         registro_data = None
 
+    proximo_id = proximoId(ComprasLentes)
     if request.method == 'POST':
         # Verifica se é uma atualização (PUT via POST)
         if request.POST.get('_method') == 'PUT':
@@ -192,7 +160,7 @@ def lanc_lentes_view(request):
                 
                 registro_model = registro_info['model']
 
-                atualizarRegistroLancamentoDeLentes(id_edicao=id_edicao, model=registro_model, request=request)
+                atualizarRegistro(id_edicao=id_edicao, model=registro_model, request=request)
                     
                 return redirect('lancamento_de_lentes')
 
@@ -202,7 +170,9 @@ def lanc_lentes_view(request):
             return redirect('lancamento_de_lentes')
         
         #Lançamento de compra de lentes
+
         try:
+
             # Converte para dicionário mutável
             post_data = request.POST.dict()
 
@@ -342,11 +312,12 @@ def listagem_lancamentos_view(request):
                 valor = data_para_formato_iso(valor)
                 dados = base_queryset.filter(data_compra=valor)
                 
-
-    return render(request, 'frontend_site/estoque/listagem_lancamentos.html', {
+    context = {
         'colunas': colunas,
         'dados': dados,
         'filtro_aplicado': filtro_aplicado,
         'identificador': request.GET.get('identificador', ''),
         'valor_identificador': request.GET.get('valor_identificador', '')
-    })   
+    }
+    
+    return render(request, 'frontend_site/estoque/listagem_lancamentos.html', context)   

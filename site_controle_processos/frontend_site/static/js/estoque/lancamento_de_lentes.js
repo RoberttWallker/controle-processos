@@ -61,7 +61,7 @@ function preencherFormularioEdicao(registroEdicao) {
         const element = document.getElementById(formField);
         if (element && registroEdicao[modelField] !== null && registroEdicao[modelField] !== undefined) {
             // Tratamento especial para campos de data
-            if (formField.includes('data_') || formField.includes('data_lib')) {
+            if (formField.includes('data_')) {
                 if (registroEdicao[modelField]) {
                     element.value = registroEdicao[modelField].split('T')[0];
                 }
@@ -77,11 +77,6 @@ function preencherFormularioEdicao(registroEdicao) {
         headerTitle.textContent = `Lançamento de Lentes - Editando ID: ${registroEdicao.id}`;
     }
     
-    // Desabilita o campo ID (não deve ser editado)
-    const idField = document.getElementById('id');
-    if (idField) {
-        idField.readOnly = true;
-    }
 
 
     // Configura os botões para modo edição
@@ -102,6 +97,7 @@ function preencherFormularioEdicao(registroEdicao) {
     }
 
     const elementosBloqueados = [
+            'id',
             'nota_fiscal',
             'duplicata',
             'num_pedido',

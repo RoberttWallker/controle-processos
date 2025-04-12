@@ -1,9 +1,10 @@
-from django.db import IntegrityError
-from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.utils import timezone
-from .models import SenhaTemporaria
+from django.db import IntegrityError
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.utils import timezone
+
+from .models import SenhaTemporaria
 
 # Create your views here.
 
