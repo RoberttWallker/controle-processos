@@ -43,6 +43,7 @@
         <table id="tabela_lancamentos">
             <thead>
                 <tr>
+                    <th >Opções</th>
                     {% for coluna in colunas %}
                         <th>{{ coluna|title }}</th>
                     {% endfor %}
@@ -50,7 +51,15 @@
             </thead>
             <tbody>
                 {% for item in dados %}
+
                     <tr data-id="{{ item.id }}">
+                        <td>
+                            <select name="opcoes_linha" id="opcoes_linha">
+                                <option value="" selected>Selecione...</option>
+                                <option value="editar">Editar</option>
+                                <option value="excluir">Excluir</option>
+                            </select>   
+                        </td>
                         <td >{{ item.id }}</td>
                         <td >{{ item.data_compra|date:"d/m/Y" }}</td>
                         <td >{{ item.ordem_de_servico }}</td>

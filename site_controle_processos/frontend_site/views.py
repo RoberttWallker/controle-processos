@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import BadRequest
 from django.db import IntegrityError
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from .aux_function import atualizarRegistro, data_para_formato_iso, proximoId
@@ -44,6 +45,23 @@ def getRegistroLancamentoDeLentes(id_edicao, request):
     except ComprasLentes.DoesNotExist:
         messages.warning(request, f"Registro com ID {id_edicao} não encontrado")
         return None
+    
+def excluirRegistroLancamentoLentes(request):
+    if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'success': False, 'message': 'Requisição inválida'}, status=400)
+
+    # Verifica se foi passado um ID para edição (via GET)
+    id_edicao = request.GET.get('id')
+
+    try:
+        registro_edicao = ComprasLentes.objects.get(id=id_edicao)
+        registro_edicao.delete()
+        return JsonResponse({'success': True, 'message': 'Registro excluído com sucesso!'})
+
+    except ComprasLentes.DoesNotExist:
+        return JsonResponse({'success': False, 'message': f'Registro com ID {id_edicao} não encontrado'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)}, status=500)
     
 #Views de registro e autenticação
 def logout_view(request):

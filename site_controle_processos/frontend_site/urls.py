@@ -3,7 +3,7 @@ from django.urls import path
 
 from .views import (admin_panel_view, lanc_lentes_view,
                     listagem_lancamentos_view, login_view, logout_view,
-                    register_view)
+                    register_view, excluirRegistroLancamentoLentes)
 
 urlpatterns = [
     path('', login_view, name='home'),
@@ -38,5 +38,6 @@ urlpatterns = [
     path('admin-panel/', admin_panel_view, name='admin_panel'),
     path('register/', register_view, name='register'),
     path('lancamento-de-lentes/', lanc_lentes_view, name='lancamento_de_lentes'),
+    path('excluir-lancamento-de-lentes/', excluirRegistroLancamentoLentes, name='excluir_lancamento_de_lentes'),
     path('listagem-lancamentos/', listagem_lancamentos_view, name='listagem_lancamentos')
 ]
