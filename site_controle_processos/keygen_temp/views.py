@@ -1,15 +1,12 @@
 from django.contrib import messages
 from django.db import IntegrityError
-from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.utils import timezone
 
-from .models import SenhaTemporaria
+from .models import (
+    SenhaTemporaria
+)
 
-# Create your views here.
-
-
-def gerar_senha(request):
+def CreatePassword(request):
     senha_gerada = None
     if request.method == "POST":
         palavra_secreta = request.POST.get('palavra_secreta')
@@ -22,9 +19,9 @@ def gerar_senha(request):
                 messages.error(request, "Palavra secreta usada nos últimos 20 minutos.")
         else:
             messages.error(request, "Palavra secreta não fornecida.")
-    return render(request, 'admin_temp_key/gerar_senha.html', {'senha_gerada': senha_gerada})
+    return render(request, 'keygen_temp/admin_temp_key/gerar_senha.html', {'senha_gerada': senha_gerada})
 
-def validar_senha(request):
+def ValidatePassword(request):
     if request.method == "POST":
         senha_inserida = request.POST.get('senha_inserida')
         try:
@@ -37,4 +34,4 @@ def validar_senha(request):
                 messages.error(request, "A senha expirou.")
         except SenhaTemporaria.DoesNotExist:
             messages.error(request, "Senha inválida.")
-    return render(request, 'admin_temp_key/validar_senha.html')
+    return render(request, 'keygen_temp/admin_temp_key/validar_senha.html')

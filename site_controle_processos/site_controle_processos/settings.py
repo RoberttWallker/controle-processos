@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'livereload',
     'django.contrib.staticfiles',
+    'rolepermissions'
     'frontend_site',
-    'keygen_temp'
+    'keygen_temp',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Servidor de e-mails
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+ROLEPERMISSIONS_MODULE = 'site_controle_processos.roles'

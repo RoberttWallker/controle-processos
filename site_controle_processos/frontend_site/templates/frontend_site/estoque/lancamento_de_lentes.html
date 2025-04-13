@@ -6,7 +6,7 @@
 {% block title %}Lançamento de Lentes{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/estoque/lancamento_de_lentes.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend_site/css/estoque/lancamento_de_lentes.css' %}">
 {% endblock %}
 
 {% block header_title %}
@@ -133,5 +133,5 @@
         // Passa as variáveis para o JavaScript global
         window.djangoContextData = '{{ django_context_json|escapejs }}';
     </script>
-    <script src="{% static 'js/estoque/lancamento_de_lentes.js' %}"></script>
+    <script src="{% static 'frontend_site/js/estoque/lancamento_de_lentes.js' %}"></script>
 {% endblock %}

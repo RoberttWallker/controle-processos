@@ -26,7 +26,7 @@ body {
 .container {
     display: flex;
     width: 500px;
-    height: 250px;
+    height: auto;
     flex-direction: column;     /* Organiza os itens em coluna */
     background-color: white;
     padding: 20px;
@@ -36,31 +36,55 @@ body {
 }
 
 #title_gerador_senhas {
-    font-size: medium;
+    font-size: x-large;
     color: rgb(49, 49, 49);
     margin-bottom: 60px;
 }
 
+#form_gerar_senha,
+#form_validar_senha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
 #palavra_secreta,
 #senha_inserida {
-    width: 360px;
-    margin-right: 10px;
+    font-size: 14pt;
+    padding: 5px;
+    width: 100%;
     text-align: center;
 }
 
-#label_senha,
-#campo_senha {
-    margin: 10px;
-    width: 450px;
-    font-size: 12px;
+/* Mostra placeholder apenas quando o input está vazio e sem foco */
+#palavra_secreta:placeholder-shown:not(:focus)::placeholder,
+#senha_inserida:placeholder-shown:not(:focus)::placeholder {
+    opacity: 1;
 }
 
-#gerar_senha {
-    font-size: 10px;
+/* Esconde em outros casos */
+#palavra_secreta::placeholder,
+#senha_inserida::placeholder {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#label_senha {
+    width: 100%;
+    font-size: 12pt;
+}
+
+#campo_senha {
+    margin: 10px;
     padding: 3px;
+    width: 100%;
+    font-size: 12pt;
 }
 
 button {
+    margin: 10px;
     padding: 5px;
     background-color: #4CAF50;
     color: white;
@@ -68,6 +92,7 @@ button {
     border-radius: 4px;
     cursor:pointer;
 }
+
 button:hover {
     background-color: #45a049;
 }

@@ -7,7 +7,7 @@
 {% block title %}Validar Senha{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_temp_key/admin_temp_key.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'keygen_temp/css/admin_temp_key/admin_temp_key.css' %}">
 {% endblock %}
 
 {% block header %}
@@ -23,7 +23,7 @@
     <div class="caixa" id="caixa_gerar_senha">
         <div class="container">
             <div id="title_gerador_senhas">
-                Validar Senha
+                Validar Senha Temporária
             </div>
             <form id="form_validar_senha" action="{% url 'validar_senha' %}" method="POST">
                 {% csrf_token %}

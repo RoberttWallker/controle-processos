@@ -9,44 +9,20 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from .aux_function import atualizarRegistro, data_para_formato_iso, proximoId
-from .models import ComprasLentes
+from .aux_function import (
+    get_next_available_id,
+    update_model_record,
+    parse_date_to_iso,
+    get_record_lancamento_de_lentes
+)
 
+from .models import (
+    ComprasLentes
+)
 
-#Funções auxiliares do banco de dados
-def getRegistroLancamentoDeLentes(id_edicao, request):
-    try:
-        registro_edicao = ComprasLentes.objects.get(id=id_edicao)
-        # Prepara os dados para o template
-        registro_data = {
-            'id': registro_edicao.id, # type: ignore
-            'descricao_lente': registro_edicao.descricao_lente,
-            'nota_fiscal': registro_edicao.nota_fiscal,
-            'custo_nota_fiscal': float(registro_edicao.custo_nota_fiscal),
-            'data_compra': registro_edicao.data_compra.strftime('%Y-%m-%d') if registro_edicao.data_compra else '',
-            'sequencial_savwin': registro_edicao.sequencial_savwin,
-            'referencia_fabricante': registro_edicao.referencia_fabricante,
-            'observacao': registro_edicao.observacao or '',
-            'ordem_de_servico': registro_edicao.ordem_de_servico,
-            'num_loja': registro_edicao.num_loja,
-            'codigo': registro_edicao.codigo,
-            'num_pedido': registro_edicao.num_pedido,
-            'custo_site': float(registro_edicao.custo_site),
-            'data_liberacao_blu': registro_edicao.data_liberacao_blu.strftime('%Y-%m-%d') if registro_edicao.data_liberacao_blu else '',
-            'valor_pago': float(registro_edicao.valor_pago),
-            'custo_tabela': float(registro_edicao.custo_tabela),
-            'duplicata': registro_edicao.duplicata
-        }
-        return {
-            'model': registro_edicao, #Retorna o objeto do banco de dados (para updates)
-            'data': registro_data #Retorna dicinário formatado (para templates)
-        }
-    
-    except ComprasLentes.DoesNotExist:
-        messages.warning(request, f"Registro com ID {id_edicao} não encontrado")
-        return None
-    
-def excluirRegistroLancamentoLentes(request):
+# Views de CRUD
+@login_required  
+def LancamentoLentesDeleteView(request):
     if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({'success': False, 'message': 'Requisição inválida'}, status=400)
 
@@ -63,12 +39,12 @@ def excluirRegistroLancamentoLentes(request):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)}, status=500)
     
-#Views de registro e autenticação
-def logout_view(request):
+# Views de registro e autenticação
+def LogoutView(request):
     logout(request)
     return redirect('login')
 
-def login_view(request):
+def LoginView(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -90,7 +66,7 @@ def login_view(request):
 
     return render(request, 'frontend_site/auth/login.html')
 
-def register_view(request):
+def RegisterView(request):
     # Verifica se a senha foi validada na sessão
     if not request.session.get('senha_validada'):
         # Se a senha não foi validada, redireciona para a página de validação
@@ -127,13 +103,13 @@ def register_view(request):
 
     return render(request, 'frontend_site/auth/register.html')
 
-#Views de páginas do sistema
+# Views de telas
 @login_required
-def admin_panel_view(request):
+def AdminPanelView(request):
     return render(request, 'frontend_site/admin_panel/admin_panel.html')
 
 @login_required
-def lanc_lentes_view(request):
+def LancamentoLentesCreateView(request):
     # Verifica se foi passado um ID para edição (via GET)
     id_edicao = request.GET.get('id')
 
@@ -147,7 +123,7 @@ def lanc_lentes_view(request):
             raise BadRequest("ID de edição inválido")
         
         try:            
-            registro_info = getRegistroLancamentoDeLentes(id_edicao=id_edicao, request=request)
+            registro_info = get_record_lancamento_de_lentes(id_edicao=id_edicao, model= ComprasLentes, request=request)
             
             if not registro_info:
                 return redirect('lancamento_de_lentes')
@@ -160,7 +136,7 @@ def lanc_lentes_view(request):
     else:
         registro_data = None
 
-    proximo_id = proximoId(ComprasLentes)
+    proximo_id = get_next_available_id(ComprasLentes)
     if request.method == 'POST':
         # Verifica se é uma atualização (PUT via POST)
         if request.POST.get('_method') == 'PUT':
@@ -171,14 +147,14 @@ def lanc_lentes_view(request):
                 return redirect('lancamento_de_lentes')
             
             try:
-                registro_info = getRegistroLancamentoDeLentes(id_edicao=id_edicao, request=request)
+                registro_info = get_record_lancamento_de_lentes(id_edicao=id_edicao, model= ComprasLentes, request=request)
             
                 if not registro_info:
                     return redirect('lancamento_de_lentes')
                 
                 registro_model = registro_info['model']
 
-                atualizarRegistro(id_edicao=id_edicao, model=registro_model, request=request)
+                update_model_record(id_edicao=id_edicao, model=registro_model, request=request)
                     
                 return redirect('lancamento_de_lentes')
 
@@ -277,7 +253,8 @@ def lanc_lentes_view(request):
     
     return render(request, 'frontend_site/estoque/lancamento_de_lentes.html', context)
 
-def listagem_lancamentos_view(request):
+@login_required
+def LancamentoLentesListView(request):
     dados = None
     filtro_aplicado = False
     
@@ -327,7 +304,7 @@ def listagem_lancamentos_view(request):
             elif identificador == 'loja':
                 dados = base_queryset.filter(num_loja=valor)
             elif identificador == 'data_compra':
-                valor = data_para_formato_iso(valor)
+                valor = parse_date_to_iso(valor)
                 dados = base_queryset.filter(data_compra=valor)
                 
     context = {

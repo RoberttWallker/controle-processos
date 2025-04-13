@@ -1,19 +1,40 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
-from .views import (admin_panel_view, lanc_lentes_view,
-                    listagem_lancamentos_view, login_view, logout_view,
-                    register_view, excluirRegistroLancamentoLentes)
+# Views de registro e autenticação
+from .views import (
+    LoginView,
+    LogoutView,
+    RegisterView
+    )
+
+# Views de telas
+from .views import (
+    AdminPanelView,
+    LancamentoLentesCreateView,
+    LancamentoLentesListView
+    )
+
+# Views de CRUD
+from .views import (
+    LancamentoLentesDeleteView
+    )
 
 urlpatterns = [
-    path('', login_view, name='home'),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
+
+    # URLs de registro e autenticação
+    path('', LoginView, name='home'),
+    path('login/', LoginView, name='login'),
+    path('logout/', LogoutView, name='logout'),
+    path('register/', RegisterView, name='register'),
+
+    # Página de reset de senha
     path(
         'password-reset/',
         auth_views.PasswordResetView.as_view(template_name='frontend_site/registration/password_reset.html'),
         name='password_reset'
     ),
+    
     # Página informando que o e-mail foi enviado
     path(
         'password-reset-msg/',
@@ -35,9 +56,11 @@ urlpatterns = [
         name='password_reset_complete'
     ),
 
-    path('admin-panel/', admin_panel_view, name='admin_panel'),
-    path('register/', register_view, name='register'),
-    path('lancamento-de-lentes/', lanc_lentes_view, name='lancamento_de_lentes'),
-    path('excluir-lancamento-de-lentes/', excluirRegistroLancamentoLentes, name='excluir_lancamento_de_lentes'),
-    path('listagem-lancamentos/', listagem_lancamentos_view, name='listagem_lancamentos')
+    # URLs de telas
+    path('admin-panel/', AdminPanelView, name='admin_panel'),
+    path('lancamento-de-lentes/', LancamentoLentesCreateView, name='lancamento_de_lentes'),
+    path('listagem-lancamentos/', LancamentoLentesListView, name='listagem_lancamentos'),
+    
+    # URLs de CRUD
+    path('excluir-lancamento-de-lentes/', LancamentoLentesDeleteView, name='excluir_lancamento_de_lentes')
 ]

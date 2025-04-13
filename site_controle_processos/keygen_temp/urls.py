@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import gerar_senha, validar_senha
+from .views import CreatePassword, ValidatePassword
 
 urlpatterns = [
-    path('gerar-senha/', gerar_senha, name='gerar_senha'),
-    path('validar-senha/', validar_senha, name='validar_senha'),
+    path('gerar-senha/', CreatePassword, name='gerar_senha'),
+    path('validar-senha/', ValidatePassword, name='validar_senha'),
 ]
