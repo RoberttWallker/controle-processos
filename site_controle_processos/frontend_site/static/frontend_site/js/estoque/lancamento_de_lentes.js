@@ -112,7 +112,7 @@ function preencherFormularioEdicao(registroEdicao) {
         if (elemento) {
             elemento.readOnly = true;
             elemento.style.opacity = '0.7';
-            elemento.style.backgroundColor = '#f5f5f5';
+            elemento.style.backgroundColor = '#969696';
             elemento.title = "Este campo não pode ser editado em modo de edição";
         }
     })

@@ -22,13 +22,29 @@
 {% block content %}
 
     <div class="caixa" id="caixa_register">
+        {% if messages %}
+            <ul class="lista_mensagens" data-redirect-url="{% url 'login' %}">
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         <div class="container" id="container_register">
             <h2>Cadastre-se</h2>
             <form action="{% url 'register' %}" method="POST">
                 
                 {% csrf_token %}
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" value="{{nome}}" required>
+                <label for="usuario">Usuário:</label>
+                <input type="text" id="usuario" name="usuario" value="{{usuario}}" required>
+
+                <label for="primeiro_nome">Primeiro Nome:</label>
+                <input type="text" id="primeiro_nome" name="primeiro_nome" value="{{primeiro_nome}}" required>
+
+                <label for="sobrenome">Sobrenome:</label>
+                <input type="text" id="sobrenome" name="sobrenome" value="{{sobrenome}}" required>
 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" value="{{email}}" required>
@@ -43,21 +59,7 @@
             </form>
         </div>
         
-        {% if messages %}
-            <ul class="lista_mensagens">
-                {% for message in messages %}
-                    <li class="message {{ message.tags }}">{{ message }}</li>
-                    {% if 'success' in message.tags %}
-                        <!-- Script para redirecionar após um pequeno atraso -->
-                        <script type="text/javascript">
-                            setTimeout(function() {
-                                window.location.href = "{% url 'login' %}";  // Redireciona para a página 'home' após o atraso
-                            }, 2000);  // 2 segundos de espera
-                        </script>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% endif %}           
+        <script src="{% static 'frontend_site/js/login_register/login_register.js' %}"></script>           
     </div>
-
+    
 {% endblock %}

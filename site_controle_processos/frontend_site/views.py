@@ -46,12 +46,12 @@ def LogoutView(request):
 
 def LoginView(request):
     if request.method == 'POST':
-        email = request.POST['email']
+        usuario = request.POST['usuario']
         password = request.POST['password']
         
         # Autenticar o usuário
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=usuario)
             user = authenticate(request, username=user.username, password=password)
         except User.DoesNotExist:
             user = None
@@ -74,31 +74,48 @@ def RegisterView(request):
         return redirect('validar_senha')
     
     if request.method == 'POST':
-        nome = request.POST['nome']
+        usuario = request.POST['usuario']
+        primeiro_nome = request.POST['primeiro_nome']
+        sobrenome = request.POST['sobrenome']
         email = request.POST['email']
         senha = request.POST['senha']
         confirm_senha = request.POST['confirm_senha']
 
         if senha != confirm_senha:
             messages.error(request, "Senhas não conferem, tente novamente!")
-            return render(request, 'frontend_site/auth/register.html', {'nome': nome, 'email': email})
+            return render(request, 'frontend_site/auth/register.html', 
+                {
+                    'usuario': usuario,
+                    'primeiro_nome': primeiro_nome,
+                    'sobrenome': sobrenome,
+                    'email': email,
+                }
+            )
         
-        if User.objects.filter(username=email).exists():
+        if User.objects.filter(email=email).exists():
             messages.error(request, "Este e-mail já está cadastrado!")
             return redirect("register")
         
-        user = User.objects.create_user(
-            username=nome,
-            email=email,
-            password=senha
-        )
+        try:
+            user = User.objects.create_user(
+                username=usuario,
+                first_name=primeiro_nome,
+                last_name=sobrenome,
+                email=email,
+                password=senha
+            )
 
-        user.save()
+            user.save()
 
-        # Remove a variável de sessão após o registro
-        del request.session['senha_validada']
+            # Remove a variável de sessão após o registro
+            del request.session['senha_validada']
 
-        messages.success(request, "Usuário registrado com sucesso!")
+            messages.success(request, "Usuário registrado com sucesso!")
+
+        except IntegrityError:
+            messages.error(request, "Este nome de usuário já está em uso!")
+            return redirect("register")
+        
         return render(request, 'frontend_site/auth/register.html')
 
     return render(request, 'frontend_site/auth/register.html')

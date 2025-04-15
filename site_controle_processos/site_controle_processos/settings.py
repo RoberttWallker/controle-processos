@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'livereload',
     'django.contrib.staticfiles',
-    'rolepermissions'
+    'rolepermissions',
     'frontend_site',
     'keygen_temp',
 ]
@@ -118,7 +118,7 @@ TIME_ZONE = 'America/Fortaleza'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -135,3 +135,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROLEPERMISSIONS_MODULE = 'site_controle_processos.roles'
+
+SECRET_WORDS = [
+    'iron', 'mandrake', 'mordor', 'augoria', 'nodlehs', 'maiden'
+]
