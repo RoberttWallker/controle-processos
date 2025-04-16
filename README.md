@@ -3,8 +3,6 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python) | ![Django](https://img.shields.io/badge/Django-5.1-green?logo=django)
 
-## Django Python
-
 Um sistema web desenvolvido em Django para gerenciamento de processos internos em empresas, inicialmente adaptado para laboratórios de ótica, mas com arquitetura flexível para outros nichos.
 
 ---
